@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
+import NavBar from './components/headerComponent/navBar.js';
 
 const spotifyWebApi = new Spotify()
 
@@ -42,6 +43,9 @@ class App extends Component{
   render(){
     return (
     <div className="App">
+      <div>
+        <NavBar />
+      </div>
       <a href='http://localhost:4002'> 
       <button>Login with Spotify</button>
       </a>
