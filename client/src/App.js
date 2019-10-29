@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
 import NavBar from './components/headerComponent/navBar.js';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const spotifyWebApi = new Spotify()
 
@@ -47,21 +50,23 @@ class App extends Component{
         <NavBar />
       </div>
       <a href='http://localhost:4002'> 
-      <button>Login with Spotify</button> 
+      <Button variant="success">Login with Spotify</Button> 
       </a>
       <div> Now Playing: {this.state.nowPlaying.name} </div>
       <div> 
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
       </div>
-      <button onClick={() => this.getNowPlaying()}> 
+      <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
-      </button>
+      </Button>
       <div> 
-        <button>Lyrics</button>
-        <button>Artist Facts</button>
-        <button>Song Facts</button>
-        <button> Visuals (Fractals)</button>
-        <button> Settings</button>
+        <ButtonGroup>
+          <Button>Lyrics</Button>
+          <Button>Artist Facts</Button>
+          <Button>Song Facts</Button>
+          <Button> Visuals (Fractals)</Button>
+          <Button> Settings</Button>
+        </ButtonGroup>
       </div>
     </div>
   );

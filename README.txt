@@ -6,6 +6,7 @@ npm init
 npm install react --save
 npm install react-dom --save
 npm install spotify-web-api-js
+npm install react-bootstrap bootstrap --save
 
 If you run into any other errors when trying to launch the website, check the error message and if missing a dependency install it by running this in the terminal:
 npm install dependency_name --save
