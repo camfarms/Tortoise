@@ -47,7 +47,7 @@ class App extends Component{
         <NavBar />
       </div>
       <a href='http://localhost:4002'> 
-      <button>Login with Spotify</button>
+      <button>Login with Spotify</button> 
       </a>
       <div> Now Playing: {this.state.nowPlaying.name} </div>
       <div> 
