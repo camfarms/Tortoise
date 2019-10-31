@@ -33,13 +33,25 @@ class App extends Component{
     return hashParams;
   }
   getNowPlaying(){
+
     spotifyWebApi.getMyCurrentPlaybackState()
-    .then((response) => {this.setState({
-      nowPlaying: {
-        name: response.item.name,
-        image: response.item.album.images[0].url
+    .then((response) => {
+      if (response.item === undefined) {
+        this.setState({
+          nowPlaying: {
+            name: 'You are not currently playing any songs on Spotify',
+            image: undefined
+          }
+        })
       }
-    })
+      else {
+        this.setState({
+          nowPlaying: {
+            name: response.item.name,
+            image: response.item.album.images[0].url
+          }
+        })
+      }
     })
   }
 
@@ -72,6 +84,7 @@ class App extends Component{
   );
   }
 }
+
   
 export default App;
 
