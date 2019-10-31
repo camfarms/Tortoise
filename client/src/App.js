@@ -36,22 +36,22 @@ class App extends Component{
 
     spotifyWebApi.getMyCurrentPlaybackState()
     .then((response) => {
+      var tempName;
+      var tempImage;
       if (response.item === undefined) {
-        this.setState({
-          nowPlaying: {
-            name: 'You are not currently playing any songs on Spotify',
-            image: undefined
-          }
-        })
+        tempName = 'You are not currently playing any songs on Spotify';
+        tempImage = undefined;
       }
       else {
-        this.setState({
-          nowPlaying: {
-            name: response.item.name,
-            image: response.item.album.images[0].url
-          }
-        })
+        tempName = response.item.name;
+        tempImage = response.item.album.images[0].url;
       }
+      this.setState({
+        nowPlaying: {
+          name: tempName,
+          image: tempImage
+        }
+      })
     })
   }
 
