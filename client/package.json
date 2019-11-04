@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "4lyrics": "^1.1.61",
+    "jssoup": "0.0.10",
+    "lyricist": "^2.2.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
-    "spotify-web-api-js": "^1.2.0"
+    "spotify-web-api-js": "^1.2.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
