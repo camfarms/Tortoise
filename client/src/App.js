@@ -77,6 +77,7 @@ class App extends Component{
           <Button>Artist Facts</Button>
           <Button>Song Facts</Button>
           <Button> Visuals (Fractals)</Button>
+          <Button> Recommended Songs</Button>
           <Button> Settings</Button>
         </ButtonGroup>
       </div>
