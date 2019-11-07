@@ -4,6 +4,7 @@ import Spotify from 'spotify-web-api-js';
 import NavBar from './components/headerComponent/navBar.js';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ArtistProfile from './ArtistProfile.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const spotifyWebApi = new Spotify()
@@ -55,6 +56,7 @@ class App extends Component{
     })
   }
 
+
   render(){
     return (
     <div className="App">
@@ -67,6 +69,9 @@ class App extends Component{
       <div> Now Playing: {this.state.nowPlaying.name} </div>
       <div> 
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
+      </div>
+      <div>
+        <ArtistProfile spotifyApi={spotifyWebApi} />
       </div>
       <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
