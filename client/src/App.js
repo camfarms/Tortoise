@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Recommendations from './Recommendations.js';
+
 const spotifyWebApi = new Spotify()
 
 class App extends Component{
@@ -67,6 +69,9 @@ class App extends Component{
       <div> Now Playing: {this.state.nowPlaying.name} </div>
       <div> 
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
+      </div>
+      <div>
+        <Recommendations spotifyApi={spotifyWebApi} />
       </div>
       <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
