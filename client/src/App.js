@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ArtistProfile from './ArtistProfile.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SpotifyWebApi from 'spotify-web-api-js';
 
 const spotifyWebApi = new Spotify()
 
@@ -34,8 +33,10 @@ class App extends Component{
     }
     return hashParams;
   }
-  getNowPlaying(){
-   
+  async getNowPlaying(){
+    if (!(ArtistProfile === undefined)) {
+      await this.ArtistProfile.refreshArtist();
+    }
 
     spotifyWebApi.getMyCurrentPlaybackState()
     .then((response) => {
@@ -57,10 +58,7 @@ class App extends Component{
       })
     })
     
-    if (!(ArtistProfile === undefined)) {
-      this.ArtistProfile.setState({spotifyApi : spotifyWebApi});
-      this.ArtistProfile.refreshArtist();
-    }
+    
   }
 
 
@@ -78,7 +76,7 @@ class App extends Component{
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
       </div>
       <div>
-        <ArtistProfile onRef={ref => (this.ArtistProfile = ref)} />
+        <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
       </div>
       <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
