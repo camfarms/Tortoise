@@ -33,9 +33,9 @@ class App extends Component{
     }
     return hashParams;
   }
-  async getNowPlaying(){
+  getNowPlaying(){
     if (!(ArtistProfile === undefined)) {
-      await this.ArtistProfile.refreshArtist();
+      this.ArtistProfile.refreshArtist();
     }
 
     spotifyWebApi.getMyCurrentPlaybackState()
