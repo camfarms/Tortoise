@@ -57,6 +57,11 @@ class App extends Component{
     })
   }
 
+  // to get currently playing song on load
+  componentDidMount() {
+    this.getNowPlaying();
+  }
+
   render(){
     return (
     <div className="App">
@@ -69,9 +74,6 @@ class App extends Component{
       <div> Now Playing: {this.state.nowPlaying.name} </div>
       <div> 
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
-      </div>
-      <div>
-        <Recommendations spotifyApi={spotifyWebApi} />
       </div>
       <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
