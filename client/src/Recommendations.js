@@ -5,16 +5,17 @@ import Spotify from 'spotify-web-api-js';
 const spotifyWebApi = new Spotify()
 
 var HttpClient = function() {
-    this.get = function(accessToken, aUrl, aCallback) {
-        var anHttpRequest = new XMLHttpRequest();
-        anHttpRequest.onreadystatechange = function() {
-            if (anHttpRequest.readyState === 4 && anHttpRequest.status === 200)
-                aCallback(anHttpRequest.responseText);
+    this.get = function(aUrl, aCallback) {
+        var req = new XMLHttpRequest();
+        req.responseType = 'json';
+        req.onreadystatechange = function() {
+            if (req.readyState === 4 && req.status === 200)
+                aCallback(req.response);
         }
-
-        anHttpRequest.open("GET", aUrl, true);
-        anHttpRequest.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-        anHttpRequest.send(null);
+        var accessToken = spotifyWebApi.getAccessToken();
+        req.open('GET', aUrl, true);
+        req.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+        req.send();
     }
 }
 
@@ -43,45 +44,36 @@ class Recommendations extends Component {
         }
     }
 
-    getRecommendations() {
+    getRecommendations(limit) {
         var client = new HttpClient();
-        var baseUrl = "https://api.spotify.com/v1/recommendations?";
-        var artistSeed = "seed_artists=";
-        var trackSeed = "seed_tracks=";
+        var baseUrl = 'https://api.spotify.com/v1/recommendations?';
+        var artistSeed = 'seed_artists=';
+        var trackSeed = 'seed_tracks=';
+        var limitParam = 'limit=' + limit;
         var getUrl = baseUrl;
         if (!(this.state.artistSeed === undefined) && !(this.state.trackSeed === undefined)) {
-            getUrl = getUrl + artistSeed + this.state.artistSeed + trackSeed + this.state.trackSeed;
+            getUrl = getUrl + artistSeed + this.state.artistSeed + '&' + trackSeed + this.state.trackSeed + '&' + limitParam;
         }
-        //console.log('"' + getUrl + '"');
-        if (!this.props.spotifyApi === undefined) {
-            var auth = spotifyWebApi.getAccessToken();
-            console.log(auth);
-            /*
-            this.props.spotifyApi.getAccessToken().then((auth) => {
-                if (!(auth === undefined)) {
-                    console.log("auth", auth);
+        client.get(getUrl, function(response) {
+            var recs = [];
+            if (!(response === undefined)) {
+                for (var i = 0; i < limit; i++) {
+                    var name = response.tracks[i].name;
+                    var artist = response.tracks[i].artists[0].name;
+                    var track = name + " - " + artist;
+                    console.log(track);
                 }
-                console.log("undefined");
-            });
-            */
-            client.get(auth, getUrl, function(response) {
-                if (!(response === undefined)) {
-                    this.setState( {
-                        tracks: response.tracks
-                    })
-                }
-            })
-        }
-
+            }
+        });
     }
 
-    componentDidUpdate() {
+    componentDidMount() {
         this.getSeeds();
-        this.getRecommendations();
+        
     }
 
     render() {
-
+        this.getRecommendations(10);
         return (
             <div>
                 test: {this.state.tracks}
