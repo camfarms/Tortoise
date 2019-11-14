@@ -4,6 +4,7 @@ import Spotify from 'spotify-web-api-js';
 import NavBar from './components/headerComponent/navBar.js';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ArtistProfile from './ArtistProfile.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Recommendations from './Recommendations/Recommendations.js';
@@ -35,6 +36,9 @@ class App extends Component{
     return hashParams;
   }
   getNowPlaying(){
+    if (!(ArtistProfile === undefined)) {
+      this.ArtistProfile.refreshArtist();
+    }
 
     spotifyWebApi.getMyCurrentPlaybackState()
     .then((response) => {
@@ -55,6 +59,8 @@ class App extends Component{
         }
       })
     })
+    
+    
   }
 
   // to get currently playing song on load
@@ -74,6 +80,9 @@ class App extends Component{
       <div> Now Playing: {this.state.nowPlaying.name} </div>
       <div> 
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
+      </div>
+      <div>
+        <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
       </div>
       <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
