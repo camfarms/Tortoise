@@ -73,6 +73,7 @@ class App extends Component{
     this.getNowPlaying();
   }
 
+  /*
   // to update whenever new song starts playing
   //TODO: make sure this doesn't break or else it will cause overflow error
   componentDidUpdate() {
@@ -83,7 +84,8 @@ class App extends Component{
     }, timeRemaining);
     return() => clearTimeout(timer);
   }
-
+  */
+ 
   //TODO: how to update each component when new song starts
   render(){
     return (
