@@ -68,6 +68,7 @@ class App extends Component{
     this.getNowPlaying();
   }
 
+  //TODO: how to update each component when new song starts
   render(){
     return (
     <div className="App">
