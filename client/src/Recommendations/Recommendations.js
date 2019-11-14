@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import { TableBody } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
 
 const spotifyWebApi = new Spotify()
 
@@ -48,7 +49,7 @@ function createData(song, artist, albumCover, preview, addToQueue) {
     return { song, artist ,albumCover, preview, addToQueue };
 }
 
-const rows = [];
+const recs = [];
 var trackSeed = undefined;
 var artistSeed = undefined;
 
@@ -71,19 +72,24 @@ function getRecommendations(limit) {
     if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
         getUrl = getUrl + 'seed_artists=' + artistSeed + 
                         '&seed_tracks=' + trackSeed + 
-                        '&limit=' + limit;
+                        '&limit=' + limit +
+                        '&market=US';
         client.get(getUrl, function(response) {
-            var recs = [];
             if (!(response === undefined)) {
                 for (var i = 0; i < limit; i++) {
                     var track_name = response.tracks[i].name;
                     var artist = response.tracks[i].artists[0].name;
-                    var previewUrl = response.tracks[i].previewUrl;
+                    if (response.tracks[i].preview_url != null) {
+                        var previewUrl = response.tracks[i].preview_url;
+                    }
+                    else {
+                        var previewUrl = "No Preview Availble";
+                    }
                     var albumArtUrl = response.tracks[i].album.images[0].url;
-                    rows.push(createData(track_name, artist, albumArtUrl, previewUrl));
+                    recs.push(createData(track_name, artist, albumArtUrl, previewUrl));
                 }
             }
-            console.log(rows);
+            console.log(recs);
         });
     }
 }
@@ -92,6 +98,7 @@ export default function RecommendationsTable() {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const previewSongButton = <Icon>play_circle_outline</Icon>;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -104,7 +111,7 @@ export default function RecommendationsTable() {
 
     setSeeds();
     getRecommendations(10);
-    if (rows.length > 0) {
+    if (recs.length > 0) {
         return (
             <Paper className={classes.root}>
                 <Table className={classes.table} stickyHeader aria-label="Song Recommendations">
@@ -117,14 +124,16 @@ export default function RecommendationsTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                        {recs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
                             <TableRow hover className="Row" key={row.song}>
                                 <TableCell className="AlbumCover" align="left">
                                     <div className="img"><img src={row.albumCover}/></div>
                                 </TableCell>
                                 <TableCell component="th" scope="row">{row.song}</TableCell>
                                 <TableCell align="left">{row.artist}</TableCell>
-                                <TableCell align="left">{row.preview}</TableCell>
+                                <TableCell align="left" component="a" href={row.preview}>
+                                    <div>{previewSongButton}</div>
+                                </TableCell>
                             </TableRow>  
                         ))}
                     </TableBody>
@@ -132,7 +141,7 @@ export default function RecommendationsTable() {
                 <TablePagination
                 rowsPerPageOptions={[2, 5, 10]}
                 component="div"
-                count={rows.length}
+                count={recs.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 backIconButtonProps={{

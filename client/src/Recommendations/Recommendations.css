@@ -8,10 +8,3 @@ td.AlbumCover {
     width: 75px;
 }
 
-tr.Row {
-    height: 10% !important;
-}
-
-TableRow.MuiTableBody-root.Row {
-    height: 10px;
-}

@@ -5,16 +5,17 @@
   "dependencies": {
     "4lyrics": "^1.1.61",
     "@material-ui/core": "^4.6.1",
+    "@material-ui/icons": "^4.5.1",
     "bootstrap": "^4.3.1",
     "jssoup": "0.0.10",
     "lyricist": "^2.2.2",
+    "proxy": "http://localhost:3000",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
     "spotify-web-api-js": "^1.2.0",
-    "xmlhttprequest": "^1.8.0",
-    "proxy": "http://localhost:3000"
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
