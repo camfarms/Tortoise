@@ -61,14 +61,23 @@ function setSeeds() {
     if (!(spotifyWebApi === undefined)) {
         spotifyWebApi.getMyCurrentPlaybackState().then((response) => {
             if (!(response.item === undefined)) {
-                    trackSeed = response.item.id;
-                    // TODO: handle array states for songs with multiple artists
+                trackSeed = response.item.id;
+                if (response.item.artists[0].id.length == 1) {
                     artistSeed  = response.item.artists[0].id;
+                }
+                else {
+                    artistSeed = response.item.artists[0].id;
+                    for (var i = 1; i < response.item.artists.length; i++) {
+                        artistSeed = artistSeed + "," + response.item.artists[i].id;
+                    }
+                }
+                console.log(artistSeed);
             }
         })
     }
 }
 // function that gets recommendations based on seeds set and returns the indicated number of song recs
+//TODO: add tunable parameters for song recommendation api call
 function getRecommendations(limit) {
     var client = new HttpClient();
     var getUrl = baseUrl;
