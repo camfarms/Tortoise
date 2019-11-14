@@ -75,12 +75,12 @@ class App extends Component{
       <div> 
         <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
       </div>
-      <div>
-        <Recommendations spotifyApi={spotifyWebApi} />
-      </div>
       <Button onClick={() => this.getNowPlaying()}> 
         Check Now Playing
       </Button>
+      <div>
+        <Recommendations/>
+      </div>
       <div> 
         <ButtonGroup>
           <Button>Lyrics</Button>
