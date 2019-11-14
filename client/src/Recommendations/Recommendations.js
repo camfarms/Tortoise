@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Recommendations.css';
 import Spotify from 'spotify-web-api-js';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -66,24 +67,26 @@ function setSeeds() {
 function getRecommendations(limit) {
     var client = new HttpClient();
     var getUrl = baseUrl;
-    if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
-        getUrl = getUrl + 'seed_artists=' + artistSeed + 
-                        '&seed_tracks=' + trackSeed + 
-                        '&limit=' + limit;
-    }
-    client.get(getUrl, function(response) {
-        var recs = [];
-        if (!(response === undefined)) {
-            for (var i = 0; i < limit; i++) {
-                var track_name = response.tracks[i].name;
-                var artist = response.tracks[i].artists[0].name;
-                var previewUrl = response.tracks[i].previewUrl;
-                var albumArtUrl = response.tracks[i].album.images[0].url;
-                rows.push(createData(track_name, artist, albumArtUrl, previewUrl));
-            }
+    if (!(spotifyWebApi === undefined)) {
+        if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
+            getUrl = getUrl + 'seed_artists=' + artistSeed + 
+                            '&seed_tracks=' + trackSeed + 
+                            '&limit=' + limit;
         }
-        console.log(rows);
-    });
+        client.get(getUrl, function(response) {
+            var recs = [];
+            if (!(response === undefined)) {
+                for (var i = 0; i < limit; i++) {
+                    var track_name = response.tracks[i].name;
+                    var artist = response.tracks[i].artists[0].name;
+                    var previewUrl = response.tracks[i].previewUrl;
+                    var albumArtUrl = response.tracks[i].album.images[0].url;
+                    rows.push(createData(track_name, artist, albumArtUrl, previewUrl));
+                }
+            }
+            console.log(rows);
+        });
+    }   
 }
 
 export default function RecommendationsTable() {
@@ -96,22 +99,22 @@ export default function RecommendationsTable() {
                 <Table className={classes.table} aria-label="Song Recommendations">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Song Name</TableCell>
-                            <TableCell align="right">Artist</TableCell>
-                            <TableCell align="right">Album Art</TableCell>
-                            <TableCell align="right">Preview</TableCell>
+                            <TableCell></TableCell>
+                            <TableCell align="left">Song Name</TableCell>
+                            <TableCell align="left">Artist</TableCell>
+                            <TableCell align="left">Preview</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map(row => (
-                            <TableRow key={row.song}>
-                                <TableCell component="th" scope="row">{row.song}</TableCell>
-                                <TableCell align="right">{row.artist}</TableCell>
-                                <TableCell align="right">
-                                    <div><img src={row.albumCover}/></div>
+                            <TableRow className="Row" key={row.song}>
+                                <TableCell className="AlbumCover" align="left">
+                                    <div className="img"><img src={row.albumCover}/></div>
                                 </TableCell>
-                                <TableCell align="right">{row.preview}</TableCell>
-                                <TableCell align="right">{row.addToQueue}</TableCell>
+                                <TableCell component="th" scope="row">{row.song}</TableCell>
+                                <TableCell align="left">{row.artist}</TableCell>
+                                <TableCell align="left">{row.preview}</TableCell>
+                                <TableCell align="left">{row.addToQueue}</TableCell>
                             </TableRow>  
                         ))}
                     </TableBody>

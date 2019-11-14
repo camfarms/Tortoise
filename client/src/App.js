@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Recommendations from './Recommendations.js';
+import Recommendations from './Recommendations/Recommendations.js';
 
 const spotifyWebApi = new Spotify()
 

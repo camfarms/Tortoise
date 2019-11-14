@@ -1,0 +1,17 @@
+div.img> img {
+    max-width: 75px;
+    max-height: 75px;
+}
+
+td.AlbumCover {
+    padding: 0px;
+    width: 75px;
+}
+
+tr.Row {
+    height: 10% !important;
+}
+
+TableRow.MuiTableBody-root.Row {
+    height: 10px;
+}
