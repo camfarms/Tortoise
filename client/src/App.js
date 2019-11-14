@@ -11,6 +11,8 @@ import Recommendations from './Recommendations/Recommendations.js';
 
 const spotifyWebApi = new Spotify()
 
+var timeRemaining = undefined;
+
 class App extends Component{
   constructor(){
     super();
@@ -51,6 +53,9 @@ class App extends Component{
       else {
         tempName = response.item.name;
         tempImage = response.item.album.images[0].url;
+        var songProgress = response.progress_ms;
+        var songDuration = response.item.duration_ms;
+        timeRemaining = songDuration - songProgress;
       }
       this.setState({
         nowPlaying: {
@@ -62,10 +67,21 @@ class App extends Component{
     
     
   }
-
+  
   // to get currently playing song on load
   componentDidMount() {
     this.getNowPlaying();
+  }
+
+  // to update whenever new song starts playing
+  //TODO: make sure this doesn't break or else it will cause overflow error
+  componentDidUpdate() {
+    console.log(timeRemaining);
+    const timer = setTimeout(() => {
+      this.getNowPlaying();
+      this.forceUpdate();
+    }, timeRemaining);
+    return() => clearTimeout(timer);
   }
 
   //TODO: how to update each component when new song starts
@@ -85,9 +101,15 @@ class App extends Component{
       <div>
         <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
       </div>
-      <Button onClick={() => this.getNowPlaying()}> 
-        Check Now Playing
-      </Button>
+      <ButtonGroup>
+        <Button onClick={() => this.getNowPlaying()}> 
+          Check Now Playing
+        </Button>
+        <Button onClick={() => this.getNowPlaying()}>
+          Get Song Recommendations
+        </Button>
+      </ButtonGroup>
+      
       <div>
         <Recommendations/>
       </div>
@@ -105,7 +127,6 @@ class App extends Component{
   );
   }
 }
-
   
 export default App;
 
