@@ -1,7 +1,24 @@
 import React, {Component} from 'react';
 import Spotify from 'spotify-web-api-js';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { TableBody } from '@material-ui/core';
 
 const spotifyWebApi = new Spotify()
+
+const useStyles = makeStyles({
+    root: {
+        width: '100%',
+        overflowX: 'auto',
+    },
+    table: {
+        minWidth: 650,
+    },
+});
 
 var baseUrl = 'https://api.spotify.com/v1/recommendations?';
 // function that makes http  requests
@@ -21,6 +38,13 @@ var HttpClient = function() {
         req.send();
     }
 }
+
+function createData(song, artist, albumCover, preview, addToQueue) {
+    return { song, artist ,albumCover, preview, addToQueue };
+}
+
+const rows = [];
+const classes = useStyles();
 
 class Recommendations extends Component {
 
@@ -63,14 +87,12 @@ class Recommendations extends Component {
                 for (var i = 0; i < limit; i++) {
                     var track_name = response.tracks[i].name;
                     var artist = response.tracks[i].artists[0].name;
-                    var track = track_name + " - " + artist;
-                    var preview_url = response.tracks[i].preview_url;
-                    var album_art_url = response.tracks[i].album.images[0].url;
-                    console.log(track);
-                    console.log('preview: ' + preview_url);
-                    console.log('album art: ' + album_art_url);
+                    var previewUrl = response.tracks[i].previewUrl;
+                    var albumArtUrl = response.tracks[i].album.images[0].url;
+                    rows.push(createData(track_name, artist, albumArtUrl, previewUrl));
                 }
             }
+            console.log(rows);
         });
     }
 
@@ -80,11 +102,39 @@ class Recommendations extends Component {
 
     render() {
         this.getRecommendations(10);
-        return (
-            <div>
-                test: {this.state.tracks}
-            </div>
-        )
+        if (rows.length > 0) {
+            return (
+                <Paper className={classes.root}>
+                    <Table className={classes.table} aria-label="Song Recommendations">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Song Name</TableCell>
+                                <TableCell align="right">Artist</TableCell>
+                                <TableCell align="right">Album Art</TableCell>
+                                <TableCell align="right">Preview</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.map(row => (
+                                <TableRow key={row.song}>
+                                    <TableCell component="th" scope="row">{row.song}</TableCell>
+                                    <TableCell align="right">{row.artist}</TableCell>
+                                    <TableCell align="right">{row.albumCover}</TableCell>
+                                    <TableCell align="right">{row.addToQueue}</TableCell>
+                                </TableRow>  
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            );
+        }
+        else {
+            return (
+                <div>
+                    "error"
+                </div>
+            )
+        }
     }
 
 }
