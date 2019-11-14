@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     tableWrapper: {
         maxHeight: 440,
         overflow: 'auto',
-    }
+    },
 });
 
 var baseUrl = 'https://api.spotify.com/v1/recommendations?';
@@ -103,6 +103,9 @@ export default function RecommendationsTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const previewSongButton = <Icon>play_circle_outline</Icon>;
 
+    setSeeds();
+    getRecommendations(50);
+    
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -112,8 +115,6 @@ export default function RecommendationsTable() {
         setPage(0);
     };
 
-    setSeeds();
-    getRecommendations(50);
     if (recs.length > 0) {
         return (
             <Paper className={classes.root}>
