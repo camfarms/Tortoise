@@ -19,9 +19,12 @@ const useStyles = makeStyles({
         overflowX: 'auto',
     },
     table: {
-        maxHeight: 440,
         minWidth: 650,
     },
+    tableWrapper: {
+        maxHeight: 440,
+        overflow: 'auto',
+    }
 });
 
 var baseUrl = 'https://api.spotify.com/v1/recommendations?';
@@ -97,7 +100,7 @@ function getRecommendations(limit) {
 export default function RecommendationsTable() {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const previewSongButton = <Icon>play_circle_outline</Icon>;
 
     const handleChangePage = (event, newPage) => {
@@ -110,36 +113,38 @@ export default function RecommendationsTable() {
     };
 
     setSeeds();
-    getRecommendations(10);
+    getRecommendations(50);
     if (recs.length > 0) {
         return (
             <Paper className={classes.root}>
-                <Table className={classes.table} stickyHeader aria-label="Song Recommendations">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell align="left">Song Name</TableCell>
-                            <TableCell align="left">Artist</TableCell>
-                            <TableCell align="left">Preview</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {recs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-                            <TableRow hover className="Row" key={row.song}>
-                                <TableCell className="AlbumCover" align="left">
-                                    <div className="img"><img src={row.albumCover}/></div>
-                                </TableCell>
-                                <TableCell component="th" scope="row">{row.song}</TableCell>
-                                <TableCell align="left">{row.artist}</TableCell>
-                                <TableCell align="left" component="a" href={row.preview}>
-                                    <div>{previewSongButton}</div>
-                                </TableCell>
-                            </TableRow>  
-                        ))}
-                    </TableBody>
-                </Table>
-                <TablePagination
-                rowsPerPageOptions={[2, 5, 10]}
+                <div className={classes.tableWrapper}>
+                    <Table className={classes.table} stickyHeader aria-label="Song Recommendations">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell></TableCell>
+                                <TableCell align="left">Song Name</TableCell>
+                                <TableCell align="left">Artist</TableCell>
+                                <TableCell align="left">Preview</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {recs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                                <TableRow hover className="Row" key={row.song}>
+                                    <TableCell className="AlbumCover" align="left">
+                                        <div className="img"><img src={row.albumCover}/></div>
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">{row.song}</TableCell>
+                                    <TableCell align="left">{row.artist}</TableCell>
+                                    <TableCell align="left" component="a" href={row.preview}>
+                                        <div>{previewSongButton}</div>
+                                    </TableCell>
+                                </TableRow>  
+                            ))}
+                        </TableBody>
+                    </Table>
+                    </div>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 count={recs.length}
                 rowsPerPage={rowsPerPage}
@@ -153,7 +158,7 @@ export default function RecommendationsTable() {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-            </Paper>
+        </Paper>
         );
     }
     else {
