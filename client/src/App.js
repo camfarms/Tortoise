@@ -7,7 +7,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ArtistProfile from './ArtistProfile.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Recommendations from './Recommendations/Recommendations.js';
+import RecommendationsTable from './Recommendations/Recommendations.js';
 
 const spotifyWebApi = new Spotify()
 
@@ -85,7 +85,7 @@ class App extends Component{
     return() => clearTimeout(timer);
   }
   */
- 
+
   //TODO: how to update each component when new song starts
   render(){
     return (
@@ -111,9 +111,8 @@ class App extends Component{
           Get Song Recommendations
         </Button>
       </ButtonGroup>
-      
       <div>
-        <Recommendations/>
+        <RecommendationsTable/>
       </div>
       <div> 
         <ButtonGroup>
