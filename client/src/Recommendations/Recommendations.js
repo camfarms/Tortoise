@@ -52,7 +52,7 @@ function createData(song, artist, albumCover, preview, addToQueue) {
     return { song, artist ,albumCover, preview, addToQueue };
 }
 
-const recs = [];
+var recs = [];
 var trackSeed = undefined;
 var artistSeed = undefined;
 
@@ -60,6 +60,8 @@ var artistSeed = undefined;
 function setSeeds() {
     if (!(spotifyWebApi === undefined)) {
         spotifyWebApi.getMyCurrentPlaybackState().then((response) => {
+            trackSeed = undefined;
+            artistSeed = undefined;
             if (!(response.item === undefined)) {
                 trackSeed = response.item.id;
                 if (response.item.artists[0].id.length == 1) {
@@ -88,6 +90,7 @@ function getRecommendations(limit) {
                         '&market=US';
         client.get(getUrl, function(response) {
             if (!(response === undefined)) {
+                recs = [];
                 for (var i = 0; i < limit; i++) {
                     var track_name = response.tracks[i].name;
                     var artist = response.tracks[i].artists[0].name;
