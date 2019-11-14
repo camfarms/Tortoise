@@ -6,6 +6,7 @@ import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import { TableBody } from '@material-ui/core';
 
@@ -17,6 +18,7 @@ const useStyles = makeStyles({
         overflowX: 'auto',
     },
     table: {
+        maxHeight: 440,
         minWidth: 650,
     },
 });
@@ -63,16 +65,13 @@ function setSeeds() {
     }
 }
 // function that gets recommendations based on seeds set and returns the indicated number of song recs
-// TODO: idea? return each track as iterable list or something for use in 'row' of recommendation table
 function getRecommendations(limit) {
     var client = new HttpClient();
     var getUrl = baseUrl;
-    if (!(spotifyWebApi === undefined)) {
-        if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
-            getUrl = getUrl + 'seed_artists=' + artistSeed + 
-                            '&seed_tracks=' + trackSeed + 
-                            '&limit=' + limit;
-        }
+    if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
+        getUrl = getUrl + 'seed_artists=' + artistSeed + 
+                        '&seed_tracks=' + trackSeed + 
+                        '&limit=' + limit;
         client.get(getUrl, function(response) {
             var recs = [];
             if (!(response === undefined)) {
@@ -86,17 +85,29 @@ function getRecommendations(limit) {
             }
             console.log(rows);
         });
-    }   
+    }
 }
 
 export default function RecommendationsTable() {
     const classes = useStyles();
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    
+    const handleChangeRowsPerPage = event => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
     setSeeds();
     getRecommendations(10);
     if (rows.length > 0) {
         return (
             <Paper className={classes.root}>
-                <Table className={classes.table} aria-label="Song Recommendations">
+                <Table className={classes.table} stickyHeader aria-label="Song Recommendations">
                     <TableHead>
                         <TableRow>
                             <TableCell></TableCell>
@@ -106,19 +117,33 @@ export default function RecommendationsTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map(row => (
-                            <TableRow className="Row" key={row.song}>
+                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                            <TableRow hover className="Row" key={row.song}>
                                 <TableCell className="AlbumCover" align="left">
                                     <div className="img"><img src={row.albumCover}/></div>
                                 </TableCell>
                                 <TableCell component="th" scope="row">{row.song}</TableCell>
                                 <TableCell align="left">{row.artist}</TableCell>
                                 <TableCell align="left">{row.preview}</TableCell>
-                                <TableCell align="left">{row.addToQueue}</TableCell>
                             </TableRow>  
                         ))}
                     </TableBody>
                 </Table>
+                <TablePagination
+                rowsPerPageOptions={[2, 5, 10]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                backIconButtonProps={{
+                'aria-label': 'previous page',
+                }}
+                nextIconButtonProps={{
+                'aria-label': 'next page',
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
             </Paper>
         );
     }
