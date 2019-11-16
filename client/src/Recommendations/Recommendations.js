@@ -80,7 +80,7 @@ function setSeeds() {
 }
 // function that gets recommendations based on seeds set and returns the indicated number of song recs
 //TODO: add tunable parameters for song recommendation api call
-function getRecommendations(limit) {
+function setRecommendations(limit) {
     var client = new HttpClient();
     var getUrl = baseUrl;
     if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
@@ -88,6 +88,7 @@ function getRecommendations(limit) {
                         '&seed_tracks=' + trackSeed + 
                         '&limit=' + limit +
                         '&market=US';
+        console.log(getUrl);
         client.get(getUrl, function(response) {
             recs = [];
             if (!(response === undefined)) {
@@ -110,13 +111,18 @@ function getRecommendations(limit) {
     }
 }
 
+function getRecommendations(limit) {
+    setSeeds();
+    setRecommendations(limit);
+}
+
+
 export default function RecommendationsTable() {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const previewSongButton = <Icon>play_circle_outline</Icon>;
 
-    setSeeds();
     getRecommendations(50);
     
     const handleChangePage = (event, newPage) => {
