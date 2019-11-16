@@ -73,18 +73,25 @@ class App extends Component{
     this.getNowPlaying();
   }
 
-  /*
+  
   // to update whenever new song starts playing
   //TODO: make sure this doesn't break or else it will cause overflow error
   componentDidUpdate() {
     console.log(timeRemaining);
-    const timer = setTimeout(() => {
-      this.getNowPlaying();
-      this.forceUpdate();
-    }, timeRemaining);
-    return() => clearTimeout(timer);
+    if (timeRemaining != 0) {
+      const timer = setTimeout(() => {
+        this.getNowPlaying();
+        this.forceUpdate();
+      }, timeRemaining);
+      return() => clearTimeout(timer);
+    }
+    else {
+      const timer = setTimeout(() => {
+      }, 3000);
+      return() => clearTimeout(timer);
+    }
   }
-  */
+  
 
   //TODO: how to update each component when new song starts
   render(){

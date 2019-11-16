@@ -89,8 +89,8 @@ function getRecommendations(limit) {
                         '&limit=' + limit +
                         '&market=US';
         client.get(getUrl, function(response) {
+            recs = [];
             if (!(response === undefined)) {
-                recs = [];
                 for (var i = 0; i < limit; i++) {
                     var track_name = response.tracks[i].name;
                     var artist = response.tracks[i].artists[0].name;
@@ -98,10 +98,11 @@ function getRecommendations(limit) {
                         var previewUrl = response.tracks[i].preview_url;
                     }
                     else {
-                        var previewUrl = "No Preview Availble";
+                        var previewUrl = "No Preview Available";
                     }
                     var albumArtUrl = response.tracks[i].album.images[0].url;
-                    recs.push(createData(track_name, artist, albumArtUrl, previewUrl));
+                    var output = createData(track_name, artist, albumArtUrl, previewUrl);
+                    recs.push(output);
                 }
             }
             console.log(recs);
