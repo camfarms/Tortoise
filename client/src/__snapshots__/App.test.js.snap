@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> spec renders App component 1`] = `undefined`;
+
+exports[`App component tests renders App component 1`] = `undefined`;
+
+exports[`App renders normally 1`] = `
+<div
+  className="App"
+>
+  <div>
+    <header>
+      <b>
+        <font
+          size="12"
+        >
+          Tortoise
+        </font>
+      </b>
+      <img
+        height={50}
+        mode="fit"
+        src="logo.png"
+        width={50}
+      />
+    </header>
+  </div>
+  <a
+    href="http://localhost:4002"
+  >
+    <button
+      className="btn btn-success"
+      disabled={false}
+      type="button"
+    >
+      Login with Spotify
+    </button>
+  </a>
+  <div>
+     Now Playing: 
+    Not Checked
+     
+  </div>
+  <div>
+    <img
+      src=""
+      style={
+        Object {
+          "widows": 100,
+        }
+      }
+    />
+  </div>
+  <div>
+    <div>
+      <h1>
+        Artist: 
+         
+      </h1>
+      
+    </div>
+  </div>
+  <div
+    className="btn-group"
+    role="group"
+  >
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Check Now Playing
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Get Song Recommendations
+    </button>
+  </div>
+  <div>
+    <div />
+  </div>
+  <div>
+    <div
+      className="btn-group"
+      role="group"
+    >
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Lyrics
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Artist Facts
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Song Facts
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+         Visuals (Fractals)
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+         Recommended Songs
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+         Settings
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Artist Profile component tests renders Artist Profile 1`] = `undefined`;
+
+exports[`test 1`] = `
+<div
+  className="App"
+>
+  <div>
+    <header>
+      <b>
+        <font
+          size="12"
+        >
+          Tortoise
+        </font>
+      </b>
+      <img
+        height={50}
+        mode="fit"
+        src="logo.png"
+        width={50}
+      />
+    </header>
+  </div>
+  <a
+    href="http://localhost:4002"
+  >
+    <button
+      className="btn btn-success"
+      disabled={false}
+      type="button"
+    >
+      Login with Spotify
+    </button>
+  </a>
+  <div>
+     Now Playing: 
+    Not Checked
+     
+  </div>
+  <div>
+    <img
+      src=""
+      style={
+        Object {
+          "widows": 100,
+        }
+      }
+    />
+  </div>
+  <div>
+    <div>
+      <h1>
+        Artist: 
+         
+      </h1>
+      
+    </div>
+  </div>
+  <div
+    className="btn-group"
+    role="group"
+  >
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Check Now Playing
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Get Song Recommendations
+    </button>
+  </div>
+  <div>
+    <div />
+  </div>
+  <div>
+    <div
+      className="btn-group"
+      role="group"
+    >
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Lyrics
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Artist Facts
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+        Song Facts
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+         Visuals (Fractals)
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+         Recommended Songs
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        type="button"
+      >
+         Settings
+      </button>
+    </div>
+  </div>
+</div>
+`;
