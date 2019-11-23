@@ -134,16 +134,6 @@ class App extends Component{
       <div>
         <RecommendationsTable/>
       </div>
-      <div> 
-        <ButtonGroup>
-          <Button>Lyrics</Button>
-          <Button>Artist Facts</Button>
-          <Button>Song Facts</Button>
-          <Button> Visuals (Fractals)</Button>
-          <Button> Recommended Songs</Button>
-          <Button> Settings</Button>
-        </ButtonGroup>
-      </div>
     </div>
   );
   }
