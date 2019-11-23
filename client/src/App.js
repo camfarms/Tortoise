@@ -2,17 +2,40 @@ import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
 import NavBar from './components/headerComponent/navBar.js';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArtistProfile from './ArtistProfile.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RecommendationsTable from './Recommendations/Recommendations.js';
-import { withThemeCreator } from '@material-ui/styles';
+import {createMuiTheme} from '@material-ui/core/styles';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { green } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
+import { CssBaseline } from '@material-ui/core';
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const spotifyWebApi = new Spotify()
 
 var timeRemaining = undefined;
+
+//theme variables
+var themeMode = "dark";
+var primary = green;
+var secondary = grey;
+
+var theme = createMuiTheme( {
+  palette: {
+    type: themeMode,
+    primary: primary,
+    secondary: secondary,
+  },
+});
 
 class App extends Component{
   constructor(){
@@ -22,6 +45,8 @@ class App extends Component{
       loggedIn: params.access_token? true: false,
       nowPlaying: {
         name: 'Not Checked',
+        artistName: 'Not Checked',
+        songInfo: '',
         image: ''
       }
     }
@@ -46,14 +71,20 @@ class App extends Component{
     spotifyWebApi.getMyCurrentPlaybackState()
     .then((response) => {
       var tempName;
+      var tempArtist;
       var tempImage;
+      var songInfo;
       if (response.item === undefined) {
         tempName = 'You are not currently playing any songs on Spotify';
+        tempArtist = 'You are not currently playing any songs on Spotify';
+        songInfo = '';
         tempImage = undefined;
       }
       else {
         tempName = response.item.name;
+        tempArtist = response.item.artists[0].name;
         tempImage = response.item.album.images[0].url;
+        songInfo = tempName + " - " + tempArtist;
         var songProgress = response.progress_ms;
         var songDuration = response.item.duration_ms;
         timeRemaining = songDuration - songProgress;
@@ -61,7 +92,9 @@ class App extends Component{
       this.setState({
         nowPlaying: {
           name: tempName,
-          image: tempImage
+          artistName: tempArtist,
+          image: tempImage,
+          songInfo: songInfo
         }
       })
     })
@@ -87,6 +120,29 @@ class App extends Component{
     clearTimeout();
   }
 
+  themeModeToggle() {
+    if (themeMode == "dark") {
+      themeMode = "light";
+      theme = createMuiTheme( {
+        palette: {
+          type: themeMode,
+          primary: primary,
+          secondary: secondary,
+        },
+      });
+    }
+    else {
+      themeMode = "dark";
+      theme = createMuiTheme( {
+        palette: {
+          type: themeMode,
+          primary: primary,
+          secondary: secondary,
+        },
+      });
+    }
+    this.forceUpdate();
+  }
 
   // to update whenever new song starts playing
   //TODO: make sure this doesn't break or else it will cause overflow error
@@ -110,30 +166,59 @@ class App extends Component{
   render(){
     return (
     <div className="App">
-      <div>
-        <NavBar />
-      </div>
-      <a href='http://localhost:4002'> 
-      <Button variant="success">Login with Spotify</Button> 
-      </a>
-      <div> Now Playing: {this.state.nowPlaying.name} </div>
-      <div> 
-        <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
-      </div>
-      <div>
-        <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
-      </div>
-      <ButtonGroup>
-        <Button onClick={() => this.getNowPlaying()}> 
-          Check Now Playing
-        </Button>
-        <Button onClick={() => this.getRecommendations()}>
-          Get Song Recommendations
-        </Button>
-      </ButtonGroup>
-      <div>
-        <RecommendationsTable/>
-      </div>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <div>
+          <NavBar />
+        </div>
+        <a href='http://localhost:4002'> 
+        <Button variant="contained" color="primary">Login with Spotify</Button> 
+        </a>
+        <div> 
+          <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
+        </div>
+        <div><Button>Now Playing: {this.state.nowPlaying.songInfo} </Button></div>
+        <ButtonGroup
+          variant="contained"
+          color="primary">
+          <Button onClick={() => this.getNowPlaying()}> 
+            Check Now Playing
+          </Button>
+          <Button onClick={() => this.getRecommendations()}>
+            Get Song Recommendations
+          </Button>
+        </ButtonGroup>
+        <div>
+        <ExpansionPanel>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon color='primary'/>}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Artist Profile</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails padding="0">
+            <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          
+        </div>
+        <div>
+          <ExpansionPanel onClick={() => this.getNowPlaying()}>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon color='primary'/>}
+            >
+              <Typography>Song Recommendations</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails padding="0">
+              <RecommendationsTable/>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </div>
+        <div>
+        <Button variant="contained" color='primary' onClick={() => this.themeModeToggle()}>Theme Mode</Button>
+        </div>
+      </MuiThemeProvider>
     </div>
   );
   }
