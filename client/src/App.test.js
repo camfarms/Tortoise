@@ -1,38 +1,66 @@
 import React from 'react';
 import App from './App.js';
 import ArtistProfile from './ArtistProfile.js';
+import Adapter from 'enzyme-adapter-react-16';
 import renderer from 'react-test-renderer';
-import {render, fireEvent} from '@testing-library/react';
+import {render, fireEvent, getByRole} from '@testing-library/react';
+import {shallow, configure} from 'enzyme';
 
+configure({adapter: new Adapter()});
+let pushatdesc = "Terrence LeVarr Thornton (born May 13, 1977), better known by his stage name Pusha T, is an American rapper, songwriter and record executive. He initially gained major recognition as half of hip hop duo Clipse, alongside his brother and fellow rapper No Malice, with whom he founded Re-Up Records. In September 2010, Thornton announced his signing to Kanye West's GOOD Music imprint, under the aegis of Def Jam Recordings. In March 2011, he released his first solo project, a mixtape titled Fear of God. Thornton released his debut solo album, My Name Is My Name, in October 2013. In November 2015, Kanye West appointed Pusha T to take over his role as president of GOOD Music.";
+
+
+/* MAIN APP TESTS */
 describe('App component tests', () => {
 
-it('renders App component', () => {
+it('App component renders correctly', () => {
     const container = render(<App/>);
     expect(container.firstChild).toMatchSnapshot();
 });
 
 });
 
+
+/* ARTIST PROFILE TESTS */
 describe('Artist Profile component tests', () => {
 
-it('renders Artist Profile', () => {
+//Create mock object for spotify api
+const spotifyMock = {getMyCurrentPlaybackState: () => {
+    return new Promise(function(resolve) {
+        var response;
+        response = {
+            item: {
+                artists: [{name: 'Pusha T'}, {name: 'The Beatles'}, {name: 'Wu-tang Clan'}]
+            }
+        }
+        resolve(response);
+    });
+}};
+
+it('Artist Profile component renders correctly', () => {
     const container = render(<ArtistProfile spotifyApi={undefined} onRef={ref => (undefined)}/>);
     expect(container.firstChild).toMatchSnapshot();
 });
 
-it('Test wikipedia calls', () => {
-    const spotifyMock = class {
-        getMyCurrentPlaybackState() {
-            return new Promise(function(resolve, reject) {
-                var response;
-                response.item.artists[0].name = 'Wu-tang clan';
-                return response;
-                resolve();
-            });
-        }
-    }
-    const container = render(<ArtistProfile spotifyApi={spotifyMock} onRef={ref => (undefined)}/>);
-    
+const wrapper1 = shallow(<ArtistProfile spotifyApi={spotifyMock} onRef={ref => (undefined)}/>);
+wrapper1.instance().refreshArtist();
+console.log('artist refreshed');
+
+it('Spotify API is being properly read', () => {
+    expect(wrapper1.instance().props.spotifyApi).not.toBe(undefined);
+});
+
+it('Successfully retrieves names from spotify api', () => {
+    console.log('testing artist name');
+    expect(wrapper1.instance().state.artist).toBe('Pusha T');
+});
+
+it('Successfully retrieves artist profile text', () => {
+    (async () => {
+        await wrapper1.refreshArtist();
+        expect(wrapper1.instance().state.artistInfo).toBe(pushatdesc);
+    });
+
 });
 
 });

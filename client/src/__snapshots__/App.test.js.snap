@@ -2,6 +2,8 @@
 
 exports[`<App /> spec renders App component 1`] = `undefined`;
 
+exports[`App component tests App component renders correctly 1`] = `undefined`;
+
 exports[`App component tests renders App component 1`] = `undefined`;
 
 exports[`App renders normally 1`] = `
@@ -135,6 +137,8 @@ exports[`App renders normally 1`] = `
   </div>
 </div>
 `;
+
+exports[`Artist Profile component tests Artist Profile component renders correctly 1`] = `undefined`;
 
 exports[`Artist Profile component tests renders Artist Profile 1`] = `undefined`;
 
