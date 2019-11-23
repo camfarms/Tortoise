@@ -29,8 +29,6 @@ const useStyles = makeStyles({
 
 var baseUrl = 'https://api.spotify.com/v1/recommendations?';
 // function that makes http requests
-// TODO: make other http functions when needed
-// TODO: move this out into own "util" js file
 class HttpClient {
     constructor() {
         this.get = function (url, callback) {
@@ -52,41 +50,50 @@ function createData(song, artist, albumCover, preview, addToQueue) {
     return { song, artist ,albumCover, preview, addToQueue };
 }
 
-const recs = [];
+var recs = [];
 var trackSeed = undefined;
 var artistSeed = undefined;
 
 // function that gets current playback state and sets state of track seed and artist seed
-function setSeeds() {
-    if (!(spotifyWebApi === undefined)) {
-        spotifyWebApi.getMyCurrentPlaybackState().then((response) => {
-            if (!(response.item === undefined)) {
-                trackSeed = response.item.id;
-                if (response.item.artists[0].id.length == 1) {
-                    artistSeed  = response.item.artists[0].id;
-                }
-                else {
-                    artistSeed = response.item.artists[0].id;
-                    for (var i = 1; i < response.item.artists.length; i++) {
-                        artistSeed = artistSeed + "," + response.item.artists[i].id;
+async function setSeeds() {
+    return new Promise(function(resolve, reject) {
+        if (!(spotifyWebApi === undefined)) {
+            spotifyWebApi.getMyCurrentPlaybackState().then((response) => {
+                trackSeed = undefined;
+                artistSeed = undefined;
+                if (!(response.item === undefined)) {
+                    trackSeed = response.item.id;
+                    if (response.item.artists[0].id.length == 1) {
+                        artistSeed  = response.item.artists[0].id;
                     }
+                    else {
+                        artistSeed = response.item.artists[0].id;
+                        for (var i = 1; i < response.item.artists.length; i++) {
+                            artistSeed = artistSeed + "," + response.item.artists[i].id;
+                        }
+                    }
+                    console.log(artistSeed);
                 }
-                console.log(artistSeed);
-            }
-        })
-    }
+            })
+            resolve();
+        }
+        else { reject(); }
+    });
 }
+
 // function that gets recommendations based on seeds set and returns the indicated number of song recs
-//TODO: add tunable parameters for song recommendation api call
-function getRecommendations(limit) {
+function setRecommendations(limit) {
     var client = new HttpClient();
     var getUrl = baseUrl;
+    console.log(artistSeed);
     if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
         getUrl = getUrl + 'seed_artists=' + artistSeed + 
                         '&seed_tracks=' + trackSeed + 
                         '&limit=' + limit +
                         '&market=US';
+        console.log(getUrl);
         client.get(getUrl, function(response) {
+            recs = [];
             if (!(response === undefined)) {
                 for (var i = 0; i < limit; i++) {
                     var track_name = response.tracks[i].name;
@@ -95,10 +102,11 @@ function getRecommendations(limit) {
                         var previewUrl = response.tracks[i].preview_url;
                     }
                     else {
-                        var previewUrl = "No Preview Availble";
+                        var previewUrl = "No Preview Available";
                     }
                     var albumArtUrl = response.tracks[i].album.images[0].url;
-                    recs.push(createData(track_name, artist, albumArtUrl, previewUrl));
+                    var output = createData(track_name, artist, albumArtUrl, previewUrl);
+                    recs.push(output);
                 }
             }
             console.log(recs);
@@ -106,13 +114,18 @@ function getRecommendations(limit) {
     }
 }
 
+function getRecommendations(limit) {
+    setSeeds();
+    setRecommendations(limit);
+}
+
+
 export default function RecommendationsTable() {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const previewSongButton = <Icon>play_circle_outline</Icon>;
 
-    setSeeds();
     getRecommendations(50);
     
     const handleChangePage = (event, newPage) => {
