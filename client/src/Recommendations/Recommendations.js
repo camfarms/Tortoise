@@ -29,8 +29,6 @@ const useStyles = makeStyles({
 
 var baseUrl = 'https://api.spotify.com/v1/recommendations?';
 // function that makes http requests
-// TODO: make other http functions when needed
-// TODO: move this out into own "util" js file
 class HttpClient {
     constructor() {
         this.get = function (url, callback) {
