@@ -175,7 +175,7 @@ class App extends Component{
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
         <div> 
-          <img src={this.state.nowPlaying.image } style = {{widows: 100}}/>
+          <img src={this.state.nowPlaying.image } style = {{windows: 100}}/>
         </div>
         <div><Button>Now Playing: {this.state.nowPlaying.songInfo} </Button></div>
         <ButtonGroup
@@ -192,8 +192,6 @@ class App extends Component{
         <ExpansionPanel>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
             >
               <Typography>Artist Profile</Typography>
             </ExpansionPanelSummary>
@@ -204,13 +202,13 @@ class App extends Component{
           
         </div>
         <div>
-          <ExpansionPanel onClick={() => this.getNowPlaying()}>
+          <ExpansionPanel margin="0" onClick={() => this.getNowPlaying()}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
               <Typography>Song Recommendations</Typography>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails padding="0">
+            <ExpansionPanelDetails>
               <RecommendationsTable/>
             </ExpansionPanelDetails>
           </ExpansionPanel>

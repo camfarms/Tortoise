@@ -25,6 +25,13 @@ div, button {
   margin: 10px;
 }
 
+div.MuiCollapse-wrapper, div.MuiCollapse-wrapperInner, div.MuiExpansionPanelDetails-root,
+div.MuiPaper-root, div.MuiPaper-elevation1 div.makeStyles-root-137 div.MuiPaper-rounded,
+div.makeStyles-tableWrapper-139 {
+  margin: 0px;
+  padding: 0px;
+}
+
 /* button {
   background: green;
   border-radius: 100px;
