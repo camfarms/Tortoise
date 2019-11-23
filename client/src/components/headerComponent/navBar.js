@@ -10,7 +10,7 @@ class NavBar extends Component {
           <li className="navButton"><Link to="">Home</Link></li>
           <li className="navButton"><Link to="">Help</Link></li>
         </ul> */}
-        <b><font size="12">Tortoise</font></b>
+        <b><font size="12">Tortoise </font></b>
         <img src={logo} width={50} height={50} mode='fit'/>
       </header>
     )
