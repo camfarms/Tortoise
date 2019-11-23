@@ -57,32 +57,37 @@ var trackSeed = undefined;
 var artistSeed = undefined;
 
 // function that gets current playback state and sets state of track seed and artist seed
-function setSeeds() {
-    if (!(spotifyWebApi === undefined)) {
-        spotifyWebApi.getMyCurrentPlaybackState().then((response) => {
-            trackSeed = undefined;
-            artistSeed = undefined;
-            if (!(response.item === undefined)) {
-                trackSeed = response.item.id;
-                if (response.item.artists[0].id.length == 1) {
-                    artistSeed  = response.item.artists[0].id;
-                }
-                else {
-                    artistSeed = response.item.artists[0].id;
-                    for (var i = 1; i < response.item.artists.length; i++) {
-                        artistSeed = artistSeed + "," + response.item.artists[i].id;
+async function setSeeds() {
+    return new Promise(function(resolve, reject) {
+        if (!(spotifyWebApi === undefined)) {
+            spotifyWebApi.getMyCurrentPlaybackState().then((response) => {
+                trackSeed = undefined;
+                artistSeed = undefined;
+                if (!(response.item === undefined)) {
+                    trackSeed = response.item.id;
+                    if (response.item.artists[0].id.length == 1) {
+                        artistSeed  = response.item.artists[0].id;
                     }
+                    else {
+                        artistSeed = response.item.artists[0].id;
+                        for (var i = 1; i < response.item.artists.length; i++) {
+                            artistSeed = artistSeed + "," + response.item.artists[i].id;
+                        }
+                    }
+                    console.log(artistSeed);
                 }
-                console.log(artistSeed);
-            }
-        })
-    }
+            })
+            resolve();
+        }
+        else { reject(); }
+    });
 }
+
 // function that gets recommendations based on seeds set and returns the indicated number of song recs
-//TODO: add tunable parameters for song recommendation api call
 function setRecommendations(limit) {
     var client = new HttpClient();
     var getUrl = baseUrl;
+    console.log(artistSeed);
     if (!(artistSeed === undefined) && !(trackSeed === undefined)) {
         getUrl = getUrl + 'seed_artists=' + artistSeed + 
                         '&seed_tracks=' + trackSeed + 

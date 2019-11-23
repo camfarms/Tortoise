@@ -8,6 +8,7 @@ import ArtistProfile from './ArtistProfile.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RecommendationsTable from './Recommendations/Recommendations.js';
+import { withThemeCreator } from '@material-ui/styles';
 
 const spotifyWebApi = new Spotify()
 
@@ -73,15 +74,27 @@ class App extends Component{
     this.getNowPlaying();
   }
 
-  
+  getRecommendations() {
+    this.getNowPlaying();
+    var self = this
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 250);
+    clearTimeout();
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 500);
+    clearTimeout();
+  }
+
+
   // to update whenever new song starts playing
   //TODO: make sure this doesn't break or else it will cause overflow error
   componentDidUpdate() {
     console.log(timeRemaining);
     if (timeRemaining != 0) {
       const timer = setTimeout(() => {
-        this.getNowPlaying();
-        this.forceUpdate();
+        this.getRecommendations();
       }, timeRemaining);
       return() => clearTimeout(timer);
     }
@@ -114,7 +127,7 @@ class App extends Component{
         <Button onClick={() => this.getNowPlaying()}> 
           Check Now Playing
         </Button>
-        <Button onClick={() => this.getNowPlaying()}>
+        <Button onClick={() => this.getRecommendations()}>
           Get Song Recommendations
         </Button>
       </ButtonGroup>
