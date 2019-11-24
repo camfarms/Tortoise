@@ -26,7 +26,6 @@ class ArtistProfile extends Component {
       else such as looking up that artist's info. */
     async getArtist() {
         var self = this;
-        console.log('getArtist');
         return new Promise(function(resolve, reject) {
             if (!(self.props.spotifyApi === undefined)) {
                 self.props.spotifyApi.getMyCurrentPlaybackState().then((response) => {
@@ -43,7 +42,6 @@ class ArtistProfile extends Component {
 
     /*Updates this component's state so that it has the currently playing artist's info. */
     getArtistInfo() {
-        console.log('get artist info');
         var self = this;
         var wikiApiUrl = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro' +
             '&explaintext&redirects=1&origin=*&indexpageids&titles=' + self.state.artist;
