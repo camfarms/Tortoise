@@ -4,9 +4,12 @@
   "private": true,
   "dependencies": {
     "4lyrics": "^1.1.61",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
     "@testing-library/jest-dom": "^4.2.4",
+    "babel-jest": "^24.9.0",
     "bootstrap": "^4.3.1",
     "jssoup": "0.0.10",
     "lyricist": "^2.2.2",

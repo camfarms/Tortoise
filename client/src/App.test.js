@@ -60,7 +60,6 @@ it('Successfully retrieves artist profile text', () => {
         await wrapper1.refreshArtist();
         expect(wrapper1.instance().state.artistInfo).toBe(pushatdesc);
     });
-
 });
 
 });
