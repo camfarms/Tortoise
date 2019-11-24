@@ -5,6 +5,7 @@ import NavBar from './components/headerComponent/navBar.js';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArtistProfile from './ArtistProfile.js';
+import Lyrics from './Lyrics.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RecommendationsTable from './Recommendations/Recommendations.js';
@@ -66,6 +67,12 @@ class App extends Component{
   getNowPlaying(){
     if (!(ArtistProfile === undefined)) {
       this.ArtistProfile.refreshArtist();
+
+    }
+
+    if (!(Lyrics === undefined)) {
+      this.Lyrics.refreshArtist();
+      
     }
 
     spotifyWebApi.getMyCurrentPlaybackState()
@@ -199,8 +206,21 @@ class App extends Component{
             <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          
         </div>
+
+        <div>
+        <ExpansionPanel>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon color='primary'/>}
+            >
+              <Typography>Lyrics</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails padding="0">
+            <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </div>
+
         <div>
           <ExpansionPanel margin="0" onClick={() => this.getNowPlaying()}>
             <ExpansionPanelSummary
