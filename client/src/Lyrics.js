@@ -51,13 +51,22 @@ class Lyrics extends Component {
         });
     }
     
+    async requestLyricsFor(title) {
+        if (!title) throw new TypeError('Input value was undefined!');
+        return new Promise(async function(resolve, reject) {
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        var response = await fetch(proxyurl + `https://some-random-api.ml/lyrics/?title=${title}`)
+        response = await response.json()
+        resolve(response.lyrics)
+    })
+    }
 
     async getLyrics(){
       var self = this;
       var Song = self.state.song;
       var Artist = self.state.artist
-      const solenolyrics= require("solenolyrics"); 
-      var lyrics = await solenolyrics.requestLyricsFor(self.state.song + " " + self.state.artist); 
+    //   const solenolyrics= require("solenolyrics"); 
+      var lyrics = await this.requestLyricsFor(self.state.song + " " + self.state.artist); 
       self.setState({LyricsInfo: lyrics})
       
       console.log(lyrics)
