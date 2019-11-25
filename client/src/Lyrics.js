@@ -91,7 +91,6 @@ class Lyrics extends Component {
 
         return (
             <div>
-                <h1>Song: {this.state.song} </h1>
                 {this.state.LyricsInfo}
             </div>
 

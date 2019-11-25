@@ -11,7 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import RecommendationsTable from './Recommendations/Recommendations.js';
 import {createMuiTheme} from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { green } from '@material-ui/core/colors';
 import { grey } from '@material-ui/core/colors';
 import { CssBaseline } from '@material-ui/core';
 
@@ -263,7 +262,7 @@ class App extends Component{
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
-              <Typography color='primary'>Artist Profile</Typography>
+              <Typography>Artist Profile</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails padding="0">
             <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
@@ -276,7 +275,7 @@ class App extends Component{
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
-              <Typography color='primary'>Lyrics</Typography>
+              <Typography>Lyrics</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails padding="0">
             <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
@@ -289,7 +288,7 @@ class App extends Component{
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
-              <Typography color='primary'>Song Recommendations</Typography>
+              <Typography>Song Recommendations</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <RecommendationsTable/>

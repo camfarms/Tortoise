@@ -73,7 +73,6 @@ class ArtistProfile extends Component {
 
         return (
             <div>
-                <h1>Artist: {this.state.artist} </h1>
                 {this.state.artistInfo}
             </div>
 
