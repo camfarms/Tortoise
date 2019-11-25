@@ -34,9 +34,9 @@ class ArtistProfile extends Component {
                             artist: response.item.artists[0].name
                         })
                         resolve();
-                    } else {reject()}
+                    } else {reject('Error: Invalid Song Object')}
                 })
-            } else {reject()}
+            } else {reject('Error: Invalid Spotify API')}
         });
     }
 
