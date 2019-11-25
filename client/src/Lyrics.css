@@ -1,0 +1,10 @@
+div.MuiExpansionPanelDetails-root {
+    display: flex; 
+    justify-content: center;
+}
+
+div.lyrics {
+    margin: 0;
+    height: 200px;
+    overflow: scroll;
+}

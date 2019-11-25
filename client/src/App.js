@@ -10,30 +10,44 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RecommendationsTable from './Recommendations/Recommendations.js';
 import {createMuiTheme} from '@material-ui/core/styles';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { green } from '@material-ui/core/colors';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { grey } from '@material-ui/core/colors';
 import { CssBaseline } from '@material-ui/core';
 
+import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Vibrant from 'node-vibrant';
 
 const spotifyWebApi = new Spotify()
 
 var timeRemaining = undefined;
+var imageUrl = '';
 
 //theme variables
+var adaptive = false;
 var themeMode = "dark";
-var primary = green;
+var primary = '#4caf50';
 var secondary = grey;
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 
 var theme = createMuiTheme( {
   palette: {
     type: themeMode,
-    primary: primary,
+    primary: {
+      main: primary
+    },
     secondary: secondary,
   },
 });
@@ -67,12 +81,9 @@ class App extends Component{
   getNowPlaying(){
     if (!(ArtistProfile === undefined)) {
       this.ArtistProfile.refreshArtist();
-
     }
-
     if (!(Lyrics === undefined)) {
       this.Lyrics.refreshArtist();
-      
     }
 
     spotifyWebApi.getMyCurrentPlaybackState()
@@ -91,6 +102,7 @@ class App extends Component{
         tempName = response.item.name;
         tempArtist = response.item.artists[0].name;
         tempImage = response.item.album.images[0].url;
+        imageUrl = tempImage;
         songInfo = tempName + " - " + tempArtist;
         var songProgress = response.progress_ms;
         var songDuration = response.item.duration_ms;
@@ -105,8 +117,6 @@ class App extends Component{
         }
       })
     })
-    
-    
   }
   
   // to get currently playing song on load
@@ -116,14 +126,67 @@ class App extends Component{
 
   getRecommendations() {
     this.getNowPlaying();
+    if (adaptive == true) {
+      this.setColor();
+    }
     var self = this
     setTimeout(function() {
       self.getNowPlaying();
+      if (adaptive == true) {
+        self.setColor();
+      }
     }, 250);
     clearTimeout();
     setTimeout(function() {
       self.getNowPlaying();
+      if (adaptive == true) {
+        self.setColor();
+      }
     }, 500);
+    clearTimeout();
+  }
+
+  defaultTheme() {
+    adaptive = false;
+    primary = '#4caf50';
+    theme = createMuiTheme( {
+      palette: {
+        type: themeMode,
+        primary: {
+          main: primary
+        },
+        secondary: secondary,
+      },
+    });
+    console.log(adaptive);
+    this.forceUpdate();
+  }
+
+  setColor() {
+    console.log(imageUrl);
+    if (imageUrl != '') {
+      Vibrant.from(imageUrl).getPalette().then((palette) => primary = rgbToHex(Math.round(palette.Vibrant._rgb[0]), Math.round(palette.Vibrant._rgb[1]), Math.round(palette.Vibrant._rgb[2])));
+      theme = createMuiTheme( {
+        palette: {
+          type: themeMode,
+          primary: {
+            main: primary
+          },
+          secondary: secondary,
+        },
+      });
+      this.forceUpdate();
+    }
+  }
+
+  updateTheme() {
+    adaptive = true;
+    console.log(adaptive);
+    this.setColor();
+    var self = this
+    setTimeout(function() {
+      self.setColor();
+    }, 250);
     clearTimeout();
   }
 
@@ -133,7 +196,9 @@ class App extends Component{
       theme = createMuiTheme( {
         palette: {
           type: themeMode,
-          primary: primary,
+          primary: {
+            main: primary
+          },
           secondary: secondary,
         },
       });
@@ -143,7 +208,9 @@ class App extends Component{
       theme = createMuiTheme( {
         palette: {
           type: themeMode,
-          primary: primary,
+          primary: {
+            main: primary
+          },
           secondary: secondary,
         },
       });
@@ -152,24 +219,25 @@ class App extends Component{
   }
 
   // to update whenever new song starts playing
-  //TODO: make sure this doesn't break or else it will cause overflow error
   componentDidUpdate() {
     console.log(timeRemaining);
     if (timeRemaining != 0) {
       const timer = setTimeout(() => {
-        this.getRecommendations();
+        this.getNowPlaying();
+        if (adaptive == true) {
+          this.updateTheme();
+        }
       }, timeRemaining);
       return() => clearTimeout(timer);
     }
     else {
       const timer = setTimeout(() => {
-      }, 3000);
+        console.log("error");
+      }, 5000);
       return() => clearTimeout(timer);
     }
   }
   
-
-  //TODO: how to update each component when new song starts
   render(){
     return (
     <div className="App">
@@ -181,48 +249,43 @@ class App extends Component{
         <a href='http://localhost:4002'> 
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
-        <div> 
-          <img src={this.state.nowPlaying.image } style = {{windows: 100}}/>
-        </div>
-        <div><Button>Now Playing: {this.state.nowPlaying.songInfo} </Button></div>
-        <ButtonGroup
-          variant="contained"
-          color="primary">
-          <Button onClick={() => this.getNowPlaying()}> 
-            Check Now Playing
-          </Button>
-          <Button onClick={() => this.getRecommendations()}>
-            Get Song Recommendations
-          </Button>
-        </ButtonGroup>
         <div>
-        <ExpansionPanel>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon color='primary'/>}
-            >
-              <Typography>Artist Profile</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails padding="0">
-            <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+          <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
         </div>
-
         <div>
-        <ExpansionPanel>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon color='primary'/>}
-            >
-              <Typography>Lyrics</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails padding="0">
-            <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+          <Grid container spacing={3}>
+            <Grid item xs={4} >
+              <ExpansionPanel>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon color='primary'/>}
+                >
+                  <Typography>Artist Profile</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails padding="0">
+                <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </Grid>
+            <Grid item xs={4}>
+              <img src={this.state.nowPlaying.image } width={300} height={300} mode='fit' style = {{windows: 100}}/>
+            </Grid>
+            <Grid item xs={4}>
+              <ExpansionPanel>
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon color='primary'/>}
+              >
+                <Typography>Lyrics</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails padding="0">
+              <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            </Grid>
+          </Grid>
         </div>
-
+        <div><Button variant='outlined'>{this.state.nowPlaying.songInfo}</Button></div>
         <div>
-          <ExpansionPanel margin="0" onClick={() => this.getNowPlaying()}>
+          <ExpansionPanel>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
@@ -234,7 +297,13 @@ class App extends Component{
           </ExpansionPanel>
         </div>
         <div>
-        <Button variant="contained" color='primary' onClick={() => this.themeModeToggle()}>Theme Mode</Button>
+          <ButtonGroup variant='contained' color='primary'>
+            <Button onClick={() => this.defaultTheme()}>Default Theme</Button>
+            <Button onClick={() => this.updateTheme()}>Adaptive Theme</Button>
+          </ButtonGroup>
+        </div>
+        <div>
+          <Button variant='outlined' color='primary' onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
         </div>
       </MuiThemeProvider>
     </div>

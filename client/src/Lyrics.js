@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Lyrics.css';
 
 class Lyrics extends Component {
 
@@ -88,11 +89,11 @@ class Lyrics extends Component {
     }
 
     render() {
-
         return (
-            <div>
-                <h1>Song: {this.state.song} </h1>
-                {this.state.LyricsInfo}
+            <div class='lyrics'>
+                {this.state.LyricsInfo.split('\n').map((item, i) => (
+                    <p key={i} text-align='center'>{item}</p>
+                ))}
             </div>
 
         )
