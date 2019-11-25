@@ -28,6 +28,7 @@ var timeRemaining = undefined;
 var imageUrl = '';
 
 //theme variables
+var adaptive = false;
 var themeMode = "dark";
 var primary = '#4caf50';
 var secondary = grey;
@@ -128,21 +129,28 @@ class App extends Component{
 
   getRecommendations() {
     this.getNowPlaying();
-    this.updateTheme();
+    if (adaptive == true) {
+      this.setColor();
+    }
     var self = this
     setTimeout(function() {
       self.getNowPlaying();
-      self.updateTheme();
+      if (adaptive == true) {
+        self.setColor();
+      }
     }, 250);
     clearTimeout();
     setTimeout(function() {
       self.getNowPlaying();
-      self.updateTheme();
+      if (adaptive == true) {
+        self.setColor();
+      }
     }, 500);
     clearTimeout();
   }
 
   defaultTheme() {
+    adaptive = false;
     primary = '#4caf50';
     theme = createMuiTheme( {
       palette: {
@@ -153,6 +161,7 @@ class App extends Component{
         secondary: secondary,
       },
     });
+    console.log(adaptive);
     this.forceUpdate();
   }
 
@@ -174,6 +183,8 @@ class App extends Component{
   }
 
   updateTheme() {
+    adaptive = true;
+    console.log(adaptive);
     this.setColor();
     var self = this
     setTimeout(function() {
@@ -221,7 +232,7 @@ class App extends Component{
     }
     else {
       const timer = setTimeout(() => {
-      }, 3000);
+      }, 5000);
       return() => clearTimeout(timer);
     }
   }
