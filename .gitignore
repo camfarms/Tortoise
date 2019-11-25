@@ -26,3 +26,6 @@ yarn-error.log*
 
 node_modules/
 
+client/coverage
+client/src/__snapshots__
+
