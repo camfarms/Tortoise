@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RecommendationsTable from './Recommendations/Recommendations.js';
 import {createMuiTheme} from '@material-ui/core/styles';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { grey } from '@material-ui/core/colors';
 import { CssBaseline } from '@material-ui/core';
 
@@ -234,6 +234,7 @@ class App extends Component{
     }
     else {
       const timer = setTimeout(() => {
+        console.log("error");
       }, 5000);
       return() => clearTimeout(timer);
     }
@@ -284,7 +285,7 @@ class App extends Component{
         </div>
 
         <div>
-          <ExpansionPanel margin="0" onClick={() => this.getNowPlaying()}>
+          <ExpansionPanel>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
