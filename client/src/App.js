@@ -226,7 +226,10 @@ class App extends Component{
     console.log(timeRemaining);
     if (timeRemaining != 0) {
       const timer = setTimeout(() => {
-        this.getRecommendations();
+        this.getNowPlaying();
+        if (adaptive == true) {
+          this.updateTheme();
+        }
       }, timeRemaining);
       return() => clearTimeout(timer);
     }
@@ -252,7 +255,7 @@ class App extends Component{
           <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
         </div>
         <div> 
-          <img src={this.state.nowPlaying.image } width={400} height={400} mode='fit' style = {{windows: 100}}/>
+          <img src={this.state.nowPlaying.image } width={300} height={300} mode='fit' style = {{windows: 100}}/>
         </div>
         <div><Button variant='outlined'>{this.state.nowPlaying.songInfo}</Button></div>
         <div>
@@ -260,7 +263,7 @@ class App extends Component{
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
-              <Typography>Artist Profile</Typography>
+              <Typography color='primary'>Artist Profile</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails padding="0">
             <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
@@ -273,7 +276,7 @@ class App extends Component{
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
-              <Typography>Lyrics</Typography>
+              <Typography color='primary'>Lyrics</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails padding="0">
             <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
@@ -286,7 +289,7 @@ class App extends Component{
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon color='primary'/>}
             >
-              <Typography>Song Recommendations</Typography>
+              <Typography color='primary'>Song Recommendations</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <RecommendationsTable/>
