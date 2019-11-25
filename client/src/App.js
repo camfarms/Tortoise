@@ -128,13 +128,16 @@ class App extends Component{
 
   getRecommendations() {
     this.getNowPlaying();
+    this.updateTheme();
     var self = this
     setTimeout(function() {
       self.getNowPlaying();
+      self.updateTheme();
     }, 250);
     clearTimeout();
     setTimeout(function() {
       self.getNowPlaying();
+      self.updateTheme();
     }, 500);
     clearTimeout();
   }
@@ -175,7 +178,7 @@ class App extends Component{
     var self = this
     setTimeout(function() {
       self.setColor();
-    }, 150);
+    }, 250);
     clearTimeout();
   }
 
@@ -207,10 +210,7 @@ class App extends Component{
     this.forceUpdate();
   }
 
-  
-
   // to update whenever new song starts playing
-  //TODO: make sure this doesn't break or else it will cause overflow error
   componentDidUpdate() {
     console.log(timeRemaining);
     if (timeRemaining != 0) {
@@ -226,8 +226,6 @@ class App extends Component{
     }
   }
   
-
-  //TODO: how to update each component when new song starts
   render(){
     return (
     <div className="App">
@@ -239,6 +237,9 @@ class App extends Component{
         <a href='http://localhost:4002'> 
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
+        <div>
+          <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
+        </div>
         <div> 
           <img src={this.state.nowPlaying.image } width={400} height={400} mode='fit' style = {{windows: 100}}/>
         </div>
@@ -285,8 +286,10 @@ class App extends Component{
           <ButtonGroup variant='contained' color='primary'>
             <Button onClick={() => this.defaultTheme()}>Default Theme</Button>
             <Button onClick={() => this.updateTheme()}>Adaptive Theme</Button>
-            <Button onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
           </ButtonGroup>
+        </div>
+        <div>
+          <Button variant='outlined' color='primary' onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
         </div>
       </MuiThemeProvider>
     </div>
