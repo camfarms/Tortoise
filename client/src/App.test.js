@@ -51,11 +51,16 @@ it('App component renders correctly', () => {
 it('Test valid spotify api', () => {
     const validSpotifyApp = mount(<App/>);
     validSpotifyApp.instance().spotifyWebApi = spotifyMock;
-    (async () => {
-        await validSpotifyApp.instance().getNowPlaying();
-        expect(validSpotifyApp.instance().state.nowPlaying.name).toBe('Pusha T');
-    });
+    expect(validSpotifyApp.instance().state.nowPlaying.name).toEqual('Not Checked');
+    validSpotifyApp.instance().getNowPlaying();
+    //expect(validSpotifyApp.instance().state.nowPlaying.name).toBe('Pusha T');
     
+});
+
+it('Successfully gets reccomendations', () => {
+    const appRec = mount(<App/>);
+    appRec.instance().spotifyWebApi = spotifyMock;
+    appRec.instance().getRecommendations();
 });
 
 // it('Test valid spotify api with no artist profile', () => {
@@ -123,6 +128,15 @@ it('Successfully retrieves artist profile text', () => {
 
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledWith('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&origin=*&indexpageids&titles=Pusha T');
+
+    process.nextTick(() => {
+        expect(wrapper1.instance().state.artistInfo).toEqual(pushatdesc);
+
+        global.fetch.mockClear();
+    })
+
+    
+
 });
 
 it('Test invalid spotify api', () => {
