@@ -20,20 +20,33 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Vibrant from 'node-vibrant';
 
 const spotifyWebApi = new Spotify()
 
 var timeRemaining = undefined;
+var imageUrl = '';
 
 //theme variables
 var themeMode = "dark";
-var primary = green;
+var primary = '#4caf50';
 var secondary = grey;
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 
 var theme = createMuiTheme( {
   palette: {
     type: themeMode,
-    primary: primary,
+    primary: {
+      main: primary
+    },
     secondary: secondary,
   },
 });
@@ -91,6 +104,7 @@ class App extends Component{
         tempName = response.item.name;
         tempArtist = response.item.artists[0].name;
         tempImage = response.item.album.images[0].url;
+        imageUrl = tempImage;
         songInfo = tempName + " - " + tempArtist;
         var songProgress = response.progress_ms;
         var songDuration = response.item.duration_ms;
@@ -105,8 +119,6 @@ class App extends Component{
         }
       })
     })
-    
-    
   }
   
   // to get currently playing song on load
@@ -127,13 +139,55 @@ class App extends Component{
     clearTimeout();
   }
 
+  defaultTheme() {
+    primary = '#4caf50';
+    theme = createMuiTheme( {
+      palette: {
+        type: themeMode,
+        primary: {
+          main: primary
+        },
+        secondary: secondary,
+      },
+    });
+    this.forceUpdate();
+  }
+
+  setColor() {
+    console.log(imageUrl);
+    if (imageUrl != '') {
+      Vibrant.from(imageUrl).getPalette().then((palette) => primary = rgbToHex(Math.round(palette.Vibrant._rgb[0]), Math.round(palette.Vibrant._rgb[1]), Math.round(palette.Vibrant._rgb[2])));
+      theme = createMuiTheme( {
+        palette: {
+          type: themeMode,
+          primary: {
+            main: primary
+          },
+          secondary: secondary,
+        },
+      });
+      this.forceUpdate();
+    }
+  }
+
+  updateTheme() {
+    this.setColor();
+    var self = this
+    setTimeout(function() {
+      self.setColor();
+    }, 150);
+    clearTimeout();
+  }
+
   themeModeToggle() {
     if (themeMode == "dark") {
       themeMode = "light";
       theme = createMuiTheme( {
         palette: {
           type: themeMode,
-          primary: primary,
+          primary: {
+            main: primary
+          },
           secondary: secondary,
         },
       });
@@ -143,13 +197,17 @@ class App extends Component{
       theme = createMuiTheme( {
         palette: {
           type: themeMode,
-          primary: primary,
+          primary: {
+            main: primary
+          },
           secondary: secondary,
         },
       });
     }
     this.forceUpdate();
   }
+
+  
 
   // to update whenever new song starts playing
   //TODO: make sure this doesn't break or else it will cause overflow error
@@ -182,19 +240,9 @@ class App extends Component{
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
         <div> 
-          <img src={this.state.nowPlaying.image } style = {{windows: 100}}/>
+          <img src={this.state.nowPlaying.image } width={400} height={400} mode='fit' style = {{windows: 100}}/>
         </div>
-        <div><Button>Now Playing: {this.state.nowPlaying.songInfo} </Button></div>
-        <ButtonGroup
-          variant="contained"
-          color="primary">
-          <Button onClick={() => this.getNowPlaying()}> 
-            Check Now Playing
-          </Button>
-          <Button onClick={() => this.getRecommendations()}>
-            Get Song Recommendations
-          </Button>
-        </ButtonGroup>
+        <div><Button variant='outlined'>{this.state.nowPlaying.songInfo}</Button></div>
         <div>
         <ExpansionPanel>
             <ExpansionPanelSummary
@@ -234,7 +282,11 @@ class App extends Component{
           </ExpansionPanel>
         </div>
         <div>
-        <Button variant="contained" color='primary' onClick={() => this.themeModeToggle()}>Theme Mode</Button>
+          <ButtonGroup variant='contained' color='primary'>
+            <Button onClick={() => this.defaultTheme()}>Default Theme</Button>
+            <Button onClick={() => this.updateTheme()}>Adaptive Theme</Button>
+            <Button onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
+          </ButtonGroup>
         </div>
       </MuiThemeProvider>
     </div>
