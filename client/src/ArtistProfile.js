@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './ArtistProfile.css';
 
 
 /* This class is a react component containing the artist profile functionality. In order for this component
@@ -72,7 +73,7 @@ class ArtistProfile extends Component {
     render() {
 
         return (
-            <div>
+            <div class='artist'>
                 {this.state.artistInfo}
             </div>
 

@@ -81,12 +81,9 @@ class App extends Component{
   getNowPlaying(){
     if (!(ArtistProfile === undefined)) {
       this.ArtistProfile.refreshArtist();
-
     }
-
     if (!(Lyrics === undefined)) {
       this.Lyrics.refreshArtist();
-      
     }
 
     spotifyWebApi.getMyCurrentPlaybackState()
