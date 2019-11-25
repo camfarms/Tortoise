@@ -14,6 +14,7 @@ import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { grey } from '@material-ui/core/colors';
 import { CssBaseline } from '@material-ui/core';
 
+import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -254,36 +255,38 @@ class App extends Component{
         <div>
           <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
         </div>
-        <div> 
-          <img src={this.state.nowPlaying.image } width={300} height={300} mode='fit' style = {{windows: 100}}/>
+        <div>
+          <Grid container spacing={3}>
+            <Grid item xs={4} >
+              <ExpansionPanel>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon color='primary'/>}
+                >
+                  <Typography>Artist Profile</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails padding="0">
+                <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </Grid>
+            <Grid item xs={4}>
+              <img src={this.state.nowPlaying.image } width={300} height={300} mode='fit' style = {{windows: 100}}/>
+            </Grid>
+            <Grid item xs={4}>
+              <ExpansionPanel>
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon color='primary'/>}
+              >
+                <Typography>Lyrics</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails padding="0">
+              <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            </Grid>
+          </Grid>
         </div>
         <div><Button variant='outlined'>{this.state.nowPlaying.songInfo}</Button></div>
-        <div>
-        <ExpansionPanel>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon color='primary'/>}
-            >
-              <Typography>Artist Profile</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails padding="0">
-            <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </div>
-
-        <div>
-        <ExpansionPanel>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon color='primary'/>}
-            >
-              <Typography>Lyrics</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails padding="0">
-            <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </div>
-
         <div>
           <ExpansionPanel>
             <ExpansionPanelSummary
