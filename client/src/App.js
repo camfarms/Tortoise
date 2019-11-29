@@ -22,6 +22,10 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Vibrant from 'node-vibrant';
 
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+
 const spotifyWebApi = new Spotify()
 
 var timeRemaining = undefined;
@@ -32,6 +36,7 @@ var adaptive = false;
 var themeMode = "dark";
 var primary = '#4caf50';
 var secondary = grey;
+var counter = 0;
 
 function componentToHex(c) {
   var hex = c.toString(16);
@@ -78,6 +83,7 @@ class App extends Component{
     }
     return hashParams;
   }
+    
   getNowPlaying(){
     if (!(ArtistProfile === undefined)) {
       this.ArtistProfile.refreshArtist();
@@ -118,7 +124,64 @@ class App extends Component{
       })
     })
   }
-  
+
+  getNextSong(){
+    var self = this
+    spotifyWebApi.skipToNext()
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 250);
+    clearTimeout();
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 500);
+    clearTimeout();
+  }
+
+  getLastSong(){
+    var self = this
+    spotifyWebApi.skipToPrevious()
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 250);
+    clearTimeout();
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 500);
+    clearTimeout();
+  }
+
+  getPause(){    
+    if (counter == 0){
+      var self = this
+      spotifyWebApi.pause()
+      setTimeout(function() {
+        self.getNowPlaying();
+      }, 250);
+      clearTimeout();
+      setTimeout(function() {
+        self.getNowPlaying();
+      }, 500);
+      clearTimeout();
+      counter++ 
+    }
+
+    else{
+      var self = this
+    spotifyWebApi.play()
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 250);
+    clearTimeout();
+    setTimeout(function() {
+      self.getNowPlaying();
+    }, 500);
+    clearTimeout();
+    counter--;
+    }
+    
+  }
+
   // to get currently playing song on load
   componentDidMount() {
     this.getNowPlaying();
@@ -243,6 +306,7 @@ class App extends Component{
     <div className="App">
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
+
         <div>
           <NavBar />
         </div>
@@ -252,6 +316,7 @@ class App extends Component{
         <div>
           <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
         </div>
+       
         <div>
           <Grid container spacing={3}>
             <Grid item xs={4} >
@@ -284,6 +349,21 @@ class App extends Component{
           </Grid>
         </div>
         <div><Button variant='outlined'>{this.state.nowPlaying.songInfo}</Button></div>
+        <div> 
+        <ButtonGroup
+          variant="contained"
+          color="primary">
+            <Button onClick={() => this.getLastSong()}> 
+            Previous
+          </Button>
+          <Button onClick={() => this.getPause()}> 
+          Play/Pause
+          </Button>
+          <Button onClick={() => this.getNextSong()}>
+            Next
+          </Button>
+        </ButtonGroup>
+        </div>  
         <div>
           <ExpansionPanel>
             <ExpansionPanelSummary
@@ -296,6 +376,8 @@ class App extends Component{
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </div>
+        <div>  
+        </div>
         <div>
           <ButtonGroup variant='contained' color='primary'>
             <Button onClick={() => this.defaultTheme()}>Default Theme</Button>
@@ -306,7 +388,7 @@ class App extends Component{
           <Button variant='outlined' color='primary' onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
         </div>
       </MuiThemeProvider>
-    </div>
+    </div>   
   );
   }
 }
