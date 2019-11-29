@@ -21,6 +21,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Vibrant from 'node-vibrant';
+import Hotkeys from 'react-hot-keys';
 
 const spotifyWebApi = new Spotify()
 
@@ -54,6 +55,7 @@ var theme = createMuiTheme( {
   },
 });
 
+
 class App extends Component{
   constructor(){
     super();
@@ -71,6 +73,7 @@ class App extends Component{
       spotifyWebApi.setAccessToken(params.access_token)
     }
   }
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -309,13 +312,32 @@ class App extends Component{
       return() => clearTimeout(timer);
     }
   }
-  
+
+  onKeyDown(keyName, e, handle) {
+    var self = this
+    if (keyName == 'left'){
+      this.getLastSong();
+    }
+    else if (keyName == 'right'){
+      this.getNextSong();
+    }
+    else if (keyName == 'space'){
+      this.getPause();
+    }
+    else if (keyName == 's'){
+      this.getShuffle();
+    }
+  }
+
   render(){
     return (
     <div className="App">
+      <Hotkeys 
+        keyName="right,left,space,s" 
+        onKeyDown={this.onKeyDown.bind(this)}
+      ></Hotkeys>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-
         <div>
           <NavBar />
         </div>
@@ -325,7 +347,6 @@ class App extends Component{
         <div>
           <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
         </div>
-       
         <div>
           <Grid container spacing={3}>
             <Grid item xs={4} >
@@ -400,7 +421,7 @@ class App extends Component{
         <div>
           <Button variant='outlined' color='primary' onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
         </div>
-      </MuiThemeProvider>
+      </MuiThemeProvider> 
     </div>   
   );
   }
