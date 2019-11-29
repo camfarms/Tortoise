@@ -22,10 +22,6 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Vibrant from 'node-vibrant';
 
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-
 const spotifyWebApi = new Spotify()
 
 var timeRemaining = undefined;
@@ -37,6 +33,7 @@ var themeMode = "dark";
 var primary = '#4caf50';
 var secondary = grey;
 var counter = 0;
+var shuffleCounter = 0;
 
 function componentToHex(c) {
   var hex = c.toString(16);
@@ -180,6 +177,18 @@ class App extends Component{
     counter--;
     }
     
+  }
+
+  getShuffle(){
+    var self = this
+    if(shuffleCounter == 0){
+      spotifyWebApi.setShuffle(true);
+      shuffleCounter++
+    }
+    else{
+      spotifyWebApi.setShuffle(false);
+      shuffleCounter--
+    }
   }
 
   // to get currently playing song on load
@@ -362,6 +371,10 @@ class App extends Component{
           <Button onClick={() => this.getNextSong()}>
             Next
           </Button>
+          <Button onClick={() => this.getShuffle()}>
+            Shuffle
+          </Button>
+
         </ButtonGroup>
         </div>  
         <div>
