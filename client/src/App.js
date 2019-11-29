@@ -314,7 +314,6 @@ class App extends Component{
   }
 
   onKeyDown(keyName, e, handle) {
-    var self = this
     if (keyName == 'left'){
       this.getLastSong();
     }
