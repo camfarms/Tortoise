@@ -109,7 +109,7 @@ function setRecommendations(limit) {
                     recs.push(output);
                 }
             }
-            console.log(recs);
+            //console.log(recs);
         });
     }
 }

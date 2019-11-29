@@ -9,7 +9,7 @@ class Lyrics extends Component {
         this.state = {
             artist: undefined,
             song: undefined,
-            LyricsInfo: ""
+            LyricsInfo: "No Lyrics loaded yet"
         }
         this.refreshArtist = this.refreshArtist.bind(this);
     }
@@ -70,7 +70,7 @@ class Lyrics extends Component {
       var lyrics = await this.requestLyricsFor(self.state.song + " " + self.state.artist); 
       self.setState({LyricsInfo: lyrics})
       
-      console.log(lyrics)
+      //console.log(lyrics)
     }
 
 
