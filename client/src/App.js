@@ -36,7 +36,7 @@ var shuffleIcon = <Icon>shuffle</Icon>;
 
 function componentToHex(c) {
   var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length === 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r, g, b) {
@@ -169,20 +169,20 @@ class App extends Component {
 
   refresh() {
     this.getNowPlaying();
-    if (adaptive == true) {
+    if (adaptive) {
       this.updateTheme();
     }
     var self = this
     setTimeout(function() {
       self.getNowPlaying();
-      if (adaptive == true) {
+      if (adaptive) {
         self.updateTheme();
       }
     }, 250);
     clearTimeout();
     setTimeout(function() {
       self.getNowPlaying();
-      if (adaptive == true) {
+      if (adaptive) {
         self.updateTheme();
       }
     }, 500);
@@ -207,7 +207,7 @@ class App extends Component {
 
   setColor() {
     console.log(imageUrl);
-    if (imageUrl != '') {
+    if (imageUrl !== '') {
       Vibrant.from(imageUrl).getPalette().then((palette) => primary = rgbToHex(Math.round(palette.Vibrant._rgb[0]), Math.round(palette.Vibrant._rgb[1]), Math.round(palette.Vibrant._rgb[2])));
       theme = createMuiTheme( {
         palette: {
@@ -234,7 +234,7 @@ class App extends Component {
   }
 
   themeModeToggle() {
-    if (themeMode == "dark") {
+    if (themeMode === "dark") {
       themeMode = "light";
       theme = createMuiTheme( {
         palette: {
@@ -284,19 +284,19 @@ class App extends Component {
   */
 
   onKeyDown(keyName, e, handle) {
-    if (keyName == 'left') {
+    if (keyName === 'left') {
       this.getLastSong(); 
     }
-    else if (keyName == 'right') {
+    else if (keyName === 'right') {
       this.getNextSong();
     }
-    else if (keyName == 'space') {
+    else if (keyName === 'space') {
       this.getPause();
     }
-    else if (keyName == 's') {
+    else if (keyName === 's') {
       this.getShuffle();
     }
-    else if (keyName == 'r') {
+    else if (keyName === 'r') {
       this.refresh();
     }
   }
@@ -332,7 +332,7 @@ class App extends Component {
               </ExpansionPanel>
             </Grid>
             <Grid item xs={4}>
-              <img src={this.state.nowPlaying.image } width={300} height={300} mode='fit' style = {{windows: 100}}/>
+              <img src={this.state.nowPlaying.image} alt="album cover" width={300} height={300} mode='fit' style = {{windows: 100}}/>
             </Grid>
             <Grid item xs={4}>
               <ExpansionPanel>
