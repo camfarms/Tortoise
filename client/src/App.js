@@ -313,7 +313,7 @@ class App extends Component {
         <div>
           <NavBar />
         </div>
-        <a href='http://localhost:4002'> 
+        <a href='http://localhost:4002/login'> 
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
         <div>
