@@ -6,6 +6,7 @@ import renderer from 'react-test-renderer';
 import {render, fireEvent, getByRole} from '@testing-library/react';
 import {shallow, configure, mount} from 'enzyme';
 import { jssPreset } from '@material-ui/core';
+import Spotify from 'spotify-web-api-js';
 
 /* Objects/Configurations necessary for tests */
 configure({adapter: new Adapter()});
@@ -50,11 +51,11 @@ it('App component renders correctly', () => {
 
 it('Test valid spotify api', () => {
     const validSpotifyApp = mount(<App/>);
+    global.spotifyWebApi = spotifyMock;
     validSpotifyApp.instance().spotifyWebApi = spotifyMock;
     expect(validSpotifyApp.instance().state.nowPlaying.name).toEqual('Not Checked');
     validSpotifyApp.instance().getNowPlaying();
-    //expect(validSpotifyApp.instance().state.nowPlaying.name).toBe('Pusha T');
-    
+    //expect(validSpotifyApp.instance().state.nowPlaying.name).toBe('Pusha T');    
 });
 
 it('Successfully gets reccomendations', () => {
@@ -90,7 +91,6 @@ it('Artist Profile component renders correctly', () => {
 const wrapper1 = shallow(<ArtistProfile spotifyApi={spotifyMock} onRef={ref => (undefined)}/>);
 
 wrapper1.instance().refreshArtist();
-console.log('artist refreshed');
 
 it('Spotify API is being properly read', () => {
     expect(wrapper1.instance().props.spotifyApi).not.toBe(undefined);
