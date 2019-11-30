@@ -150,7 +150,7 @@ class App extends Component {
   }
 
   getShuffle(){
-    if (shuffle) {
+    if (!shuffle) {
       spotifyWebApi.setShuffle(true);
       shuffleIcon = <Icon>shuffle</Icon>;
       shuffle = true;
