@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './Recommendations.css';
 import Spotify from 'spotify-web-api-js';
 import { makeStyles } from '@material-ui/core/styles';
@@ -63,7 +63,7 @@ async function setSeeds() {
                 artistSeed = undefined;
                 if (!(response.item === undefined)) {
                     trackSeed = response.item.id;
-                    if (response.item.artists[0].id.length == 1) {
+                    if (response.item.artists[0].id.length === 1) {
                         artistSeed  = response.item.artists[0].id;
                     }
                     else {
@@ -94,15 +94,16 @@ function setRecommendations(limit) {
         console.log(getUrl);
         client.get(getUrl, function(response) {
             recs = [];
+            var previewUrl = '';
             if (!(response === undefined)) {
                 for (var i = 0; i < limit; i++) {
                     var track_name = response.tracks[i].name;
                     var artist = response.tracks[i].artists[0].name;
                     if (response.tracks[i].preview_url != null) {
-                        var previewUrl = response.tracks[i].preview_url;
+                        previewUrl = response.tracks[i].preview_url;
                     }
                     else {
-                        var previewUrl = "No Preview Available";
+                        previewUrl = "No Preview Available";
                     }
                     var albumArtUrl = response.tracks[i].album.images[0].url;
                     var output = createData(track_name, artist, albumArtUrl, previewUrl);
@@ -154,7 +155,7 @@ export default function RecommendationsTable() {
                             {recs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
                                 <TableRow hover className="Row" key={row.song}>
                                     <TableCell className="AlbumCover" align="left">
-                                        <div className="img"><img src={row.albumCover}/></div>
+                                        <div className="img"><img src={row.albumCover} alt="album cover"/></div>
                                     </TableCell>
                                     <TableCell component="th" scope="row">{row.song}</TableCell>
                                     <TableCell align="left">{row.artist}</TableCell>
