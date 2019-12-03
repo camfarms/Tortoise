@@ -9,7 +9,7 @@ class Lyrics extends Component {
         this.state = {
             artist: undefined,
             song: undefined,
-            LyricsInfo: ""
+            LyricsInfo: "No Lyrics loaded yet"
         }
         this.refreshArtist = this.refreshArtist.bind(this);
     }
@@ -64,13 +64,10 @@ class Lyrics extends Component {
 
     async getLyrics(){
       var self = this;
-      var Song = self.state.song;
-      var Artist = self.state.artist
-    //   const solenolyrics= require("solenolyrics"); 
       var lyrics = await this.requestLyricsFor(self.state.song + " " + self.state.artist); 
       self.setState({LyricsInfo: lyrics})
       
-      console.log(lyrics)
+      //console.log(lyrics)
     }
 
 
@@ -89,9 +86,13 @@ class Lyrics extends Component {
     }
 
     render() {
+        var lyrics = this.state.LyricsInfo;
+        if (lyrics === undefined) {
+            lyrics = "No Lyrics loaded yet";
+        }
         return (
-            <div class='lyrics'>
-                {this.state.LyricsInfo.split('\n').map((item, i) => (
+            <div className='lyrics'>
+                {lyrics.split('\n').map((item, i) => (
                     <p key={i} text-align='center'>{item}</p>
                 ))}
             </div>

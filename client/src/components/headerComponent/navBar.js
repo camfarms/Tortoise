@@ -6,7 +6,7 @@ class NavBar extends Component {
   render() {
     return (
       <header>
-        <img src={logo} width={500} height={100} mode='fit'/>
+        <img src={logo} alt="logo" width={500} height={100} mode='fit'/>
       </header>
     )
   }

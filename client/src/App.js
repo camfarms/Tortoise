@@ -7,13 +7,11 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArtistProfile from './ArtistProfile.js';
 import Lyrics from './Lyrics.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import RecommendationsTable from './Recommendations/Recommendations.js';
 import {createMuiTheme} from '@material-ui/core/styles';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { grey } from '@material-ui/core/colors';
 import { CssBaseline } from '@material-ui/core';
-
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -21,21 +19,24 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Vibrant from 'node-vibrant';
+import Hotkeys from 'react-hot-keys';
+import Icon from '@material-ui/core/Icon';
 
 const spotifyWebApi = new Spotify()
-
 var timeRemaining = undefined;
 var imageUrl = '';
-
-//theme variables
 var adaptive = false;
 var themeMode = "dark";
 var primary = '#4caf50';
 var secondary = grey;
+var play = true;
+var shuffle = false;
+var playIcon = <Icon>pause_circle_outline</Icon>;
+var shuffleIcon = <Icon>shuffle</Icon>;
 
 function componentToHex(c) {
   var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length === 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r, g, b) {
@@ -52,11 +53,11 @@ var theme = createMuiTheme( {
   },
 });
 
-class App extends Component{
-  constructor(){
+class App extends Component {
+  constructor() {
     super();
     const params = this.getHashParams();
-    this.state ={
+    this.state = {
       loggedIn: params.access_token? true: false,
       nowPlaying: {
         name: 'Not Checked',
@@ -65,10 +66,11 @@ class App extends Component{
         image: ''
       }
     }
-    if (params.access_token){
-      spotifyWebApi.setAccessToken(params.access_token)
+    if (params.access_token) {
+      spotifyWebApi.setAccessToken(params.access_token);
     }
   }
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -78,7 +80,8 @@ class App extends Component{
     }
     return hashParams;
   }
-  getNowPlaying(){
+    
+  getNowPlaying() {
     if (!(ArtistProfile === undefined)) {
       this.ArtistProfile.refreshArtist();
     }
@@ -108,7 +111,7 @@ class App extends Component{
         var songDuration = response.item.duration_ms;
         timeRemaining = songDuration - songProgress;
       }
-      this.setState({
+      this.setState( {
         nowPlaying: {
           name: tempName,
           artistName: tempArtist,
@@ -118,29 +121,69 @@ class App extends Component{
       })
     })
   }
-  
+
+  getNextSong() {
+    spotifyWebApi.skipToNext();
+    this.refresh();
+    console.log(timeRemaining);
+  }
+
+  getLastSong() {
+    spotifyWebApi.skipToPrevious();
+    this.refresh();
+    console.log(timeRemaining);
+  }
+
+  getPause(){    
+    if (play) {
+      spotifyWebApi.pause();
+      playIcon = <Icon>play_circle_outline</Icon>;
+      this.refresh();
+      play = false;
+    }
+    else {
+      spotifyWebApi.play();
+      playIcon = <Icon>pause_circle_outline</Icon>;
+      this.refresh();
+      play = true;
+    }
+  }
+
+  getShuffle(){
+    if (!shuffle) {
+      spotifyWebApi.setShuffle(true);
+      shuffleIcon = <Icon>shuffle</Icon>;
+      shuffle = true;
+    }
+    else {
+      spotifyWebApi.setShuffle(false);
+      shuffleIcon = <Icon>shuffle</Icon>;
+      shuffle = false;
+    }
+  }
+
   // to get currently playing song on load
   componentDidMount() {
     this.getNowPlaying();
   }
 
-  getRecommendations() {
+  refresh() {
     this.getNowPlaying();
-    if (adaptive == true) {
-      this.setColor();
+    if (adaptive) {
+      this.updateTheme();
     }
     var self = this
     setTimeout(function() {
       self.getNowPlaying();
-      if (adaptive == true) {
-        self.setColor();
+      if (adaptive) {
+        self.updateTheme();
       }
     }, 250);
     clearTimeout();
     setTimeout(function() {
       self.getNowPlaying();
-      if (adaptive == true) {
-        self.setColor();
+      if (adaptive) {
+        self.updateTheme();
       }
     }, 500);
     clearTimeout();
@@ -164,7 +207,7 @@ class App extends Component{
 
   setColor() {
     console.log(imageUrl);
-    if (imageUrl != '') {
+    if (imageUrl !== '') {
       Vibrant.from(imageUrl).getPalette().then((palette) => primary = rgbToHex(Math.round(palette.Vibrant._rgb[0]), Math.round(palette.Vibrant._rgb[1]), Math.round(palette.Vibrant._rgb[2])));
       theme = createMuiTheme( {
         palette: {
@@ -191,7 +234,7 @@ class App extends Component{
   }
 
   themeModeToggle() {
-    if (themeMode == "dark") {
+    if (themeMode === "dark") {
       themeMode = "light";
       theme = createMuiTheme( {
         palette: {
@@ -219,6 +262,7 @@ class App extends Component{
   }
 
   // to update whenever new song starts playing
+  /*
   componentDidUpdate() {
     console.log(timeRemaining);
     if (timeRemaining != 0) {
@@ -237,53 +281,90 @@ class App extends Component{
       return() => clearTimeout(timer);
     }
   }
-  
-  render(){
+  */
+
+  onKeyDown(keyName, e, handle) {
+    if (keyName === 'left') {
+      this.getLastSong(); 
+    }
+    else if (keyName === 'right') {
+      this.getNextSong();
+    }
+    else if (keyName === 'space') {
+      this.getPause();
+    }
+    else if (keyName === 's') {
+      this.getShuffle();
+    }
+    else if (keyName === 'r') {
+      this.refresh();
+    }
+  }
+
+  render() {
     return (
     <div className="App">
+      <Hotkeys 
+        keyName="right,left,space,s,r" 
+        onKeyDown={this.onKeyDown.bind(this)}
+      ></Hotkeys>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <div>
           <NavBar />
         </div>
-        <a href='http://localhost:4002'> 
+        <a href='http://localhost:4002/login'> 
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
         <div>
-          <Button variant="contained" color="primary" onClick={() => this.getNowPlaying()}>Refresh</Button>
+          <Button variant="contained" color="primary" onClick={() => this.refresh()}>Refresh</Button>
         </div>
         <div>
           <Grid container spacing={3}>
-            <Grid item xs={4} >
+            <Grid item xs={4}>
               <ExpansionPanel>
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon color='primary'/>}
-                >
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon color='primary'/>}>
                   <Typography>Artist Profile</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails padding="0">
-                <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)} />
+                <ArtistProfile spotifyApi={spotifyWebApi} onRef={ref => (this.ArtistProfile = ref)}/>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </Grid>
             <Grid item xs={4}>
-              <img src={this.state.nowPlaying.image } width={300} height={300} mode='fit' style = {{windows: 100}}/>
+              <img src={this.state.nowPlaying.image} alt="album cover" width={300} height={300} mode='fit' style = {{windows: 100}}/>
             </Grid>
             <Grid item xs={4}>
               <ExpansionPanel>
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon color='primary'/>}
-              >
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon color='primary'/>}>
                 <Typography>Lyrics</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails padding="0">
-              <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
+                <Lyrics spotifyApi={spotifyWebApi} onRef={ref => (this.Lyrics = ref)} />
               </ExpansionPanelDetails>
             </ExpansionPanel>
             </Grid>
           </Grid>
         </div>
         <div><Button variant='outlined'>{this.state.nowPlaying.songInfo}</Button></div>
+        <div> 
+        <ButtonGroup
+          variant="contained"
+          color="primary">
+            <Button onClick={() => this.getLastSong()}> 
+            <Icon>skip_previous</Icon>
+          </Button>
+          <Button onClick={() => this.getPause()}> 
+            {playIcon}
+          </Button>
+          <Button onClick={() => this.getNextSong()}>
+            <Icon>skip_next</Icon>
+          </Button>
+          <Button onClick={() => this.getShuffle()}>
+            {shuffleIcon}
+          </Button>
+        </ButtonGroup>
+        </div>  
         <div>
           <ExpansionPanel>
             <ExpansionPanelSummary
@@ -305,8 +386,8 @@ class App extends Component{
         <div>
           <Button variant='outlined' color='primary' onClick={() => this.themeModeToggle()}>Dark/Light Mode Toggle</Button>
         </div>
-      </MuiThemeProvider>
-    </div>
+      </MuiThemeProvider> 
+    </div>   
   );
   }
 }

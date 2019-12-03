@@ -73,7 +73,7 @@ class ArtistProfile extends Component {
     render() {
 
         return (
-            <div class='artist'>
+            <div className='artist'>
                 {this.state.artistInfo}
             </div>
 
