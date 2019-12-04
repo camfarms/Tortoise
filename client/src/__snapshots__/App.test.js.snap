@@ -142,6 +142,8 @@ exports[`Artist Profile component tests Artist Profile component renders correct
 
 exports[`Artist Profile component tests renders Artist Profile 1`] = `undefined`;
 
+exports[`Lyrics component tests Lyrics component renders correctly 1`] = `undefined`;
+
 exports[`test 1`] = `
 <div
   className="App"
