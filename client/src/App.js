@@ -313,7 +313,7 @@ class App extends Component {
         <div>
           <NavBar />
         </div>
-        <a href='http://localhost:4002/login'> 
+        <a href='https://camfarms.github.io/Tortoise_auth/'> 
         <Button variant="contained" color="primary">Login with Spotify</Button> 
         </a>
         <div>
