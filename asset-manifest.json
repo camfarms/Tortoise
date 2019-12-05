@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Tortoise/static/css/main.aed36a2a.chunk.css",
-    "main.js": "/Tortoise/static/js/main.fa0b7b03.chunk.js",
-    "main.js.map": "/Tortoise/static/js/main.fa0b7b03.chunk.js.map",
+    "main.js": "/Tortoise/static/js/main.ef6e4ad7.chunk.js",
+    "main.js.map": "/Tortoise/static/js/main.ef6e4ad7.chunk.js.map",
     "runtime-main.js": "/Tortoise/static/js/runtime-main.8e768d33.js",
     "runtime-main.js.map": "/Tortoise/static/js/runtime-main.8e768d33.js.map",
     "static/css/2.0624914a.chunk.css": "/Tortoise/static/css/2.0624914a.chunk.css",
     "static/js/2.324cefee.chunk.js": "/Tortoise/static/js/2.324cefee.chunk.js",
     "static/js/2.324cefee.chunk.js.map": "/Tortoise/static/js/2.324cefee.chunk.js.map",
     "index.html": "/Tortoise/index.html",
-    "precache-manifest.3f2b6b5bb992c6200fa9f484eae2e0ec.js": "/Tortoise/precache-manifest.3f2b6b5bb992c6200fa9f484eae2e0ec.js",
+    "precache-manifest.a1113a065601615b87d9487d370a8062.js": "/Tortoise/precache-manifest.a1113a065601615b87d9487d370a8062.js",
     "service-worker.js": "/Tortoise/service-worker.js",
     "static/css/2.0624914a.chunk.css.map": "/Tortoise/static/css/2.0624914a.chunk.css.map",
     "static/css/main.aed36a2a.chunk.css.map": "/Tortoise/static/css/main.aed36a2a.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.0624914a.chunk.css",
     "static/js/2.324cefee.chunk.js",
     "static/css/main.aed36a2a.chunk.css",
-    "static/js/main.fa0b7b03.chunk.js"
+    "static/js/main.ef6e4ad7.chunk.js"
   ]
 }
