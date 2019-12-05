@@ -1,2 +1,0 @@
-(this["webpackJsonpweb-api-auth-examples"]=this["webpackJsonpweb-api-auth-examples"]||[]).push([[0],{2:function(o,n,e){o.exports=e(9)},8:function(o,n,e){},9:function(o,n,e){"use strict";e.r(n);e(0),e(4),e(8),Boolean("localhost"===window.location.hostname||"[::1]"===window.location.hostname||window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));"serviceWorker"in navigator&&navigator.serviceWorker.ready.then((function(o){o.unregister()}))}},[[2,1,2]]]);
-//# sourceMappingURL=main.b660e8ef.chunk.js.map
