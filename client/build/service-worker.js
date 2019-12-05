@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Tortoise/precache-manifest.3f2b6b5bb992c6200fa9f484eae2e0ec.js"
+  "/Tortoise/precache-manifest.a1113a065601615b87d9487d370a8062.js"
 );
 
 self.addEventListener('message', (event) => {

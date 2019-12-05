@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0e98fc513a9776d858774cc798563212",
+    "revision": "c3d33c11ac2e45fdfbe6a50999c714cb",
     "url": "/Tortoise/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Tortoise/static/css/2.0624914a.chunk.css"
   },
   {
-    "revision": "1e092cc416d7ca601db1",
+    "revision": "201be929ea9c968b2ff9",
     "url": "/Tortoise/static/css/main.aed36a2a.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Tortoise/static/js/2.324cefee.chunk.js"
   },
   {
-    "revision": "1e092cc416d7ca601db1",
-    "url": "/Tortoise/static/js/main.fa0b7b03.chunk.js"
+    "revision": "201be929ea9c968b2ff9",
+    "url": "/Tortoise/static/js/main.ef6e4ad7.chunk.js"
   },
   {
     "revision": "758659570612934c42eb",
