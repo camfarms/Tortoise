@@ -314,7 +314,7 @@ class App extends Component {
           <NavBar />
         </div>
         <a href='https://tortoise-auth.herokuapp.com/'> 
-        <Button variant="contained" color="primary">Login with Spotify</Button> 
+        <Button variant="contained" color="primary">Login with Spotify!!!!!!!!!!!</Button> 
         </a>
         <div>
           <Button variant="contained" color="primary" onClick={() => this.refresh()}>Refresh</Button>
