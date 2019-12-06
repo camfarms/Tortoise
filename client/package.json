@@ -2,11 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-<<<<<<< HEAD
   "homepage": "http://camfarms.github.io/Tortoise",
-=======
-  //"homepage": "http://camfarms.github.io/Tortoise",
->>>>>>> 5a016acaed3d1142785163a1f9f97dc67ed47138
   "dependencies": {
     "4lyrics": "^1.1.61",
     "@babel/preset-env": "^7.7.4",
