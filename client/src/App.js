@@ -313,7 +313,7 @@ class App extends Component {
         <div>
           <NavBar />
         </div>
-        <a href='https://tortoise-auth.herokuapp.com/'> 
+        <a href='https://tortoise-auth.herokuapp.com/login'> 
         <Button variant="contained" color="primary">Login with Spotify!!!!!!!!!!!</Button> 
         </a>
         <div>
